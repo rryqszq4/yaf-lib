@@ -13,17 +13,21 @@ class System_Mongo {
      */
     private static $instance;
 
+    private $connection;
+
     /**
      * Description:数据库连接句柄
      */
     private $db;
+
+    private $collection;
 
     /**
      * Description:私有化构造函数，防止外界实例化对象
      */
     private function __construct()
     {
-        echo 123;
+
     }
 
     /**
@@ -52,5 +56,25 @@ class System_Mongo {
     public function GetDbConnect()
     {
         return $this->db;
+    }
+
+    public function conn(){
+		$this->connection = new MongoClient('mongodb://root:root@127.0.0.1:27017/gamedb');
+		return $this;
+    }
+
+	public function selectDB($dbname){
+        $this->db = $this->connection->selectDB($dbname);
+		return $this;
+    }
+
+    public function selectCollection($collection){
+        $this->collection = $this->db->selectCollection($collection);
+		return $this;
+    }
+
+    public function findOne($query){
+        $data = $this->collection->findOne($query);
+        return $data;
     }
 }
