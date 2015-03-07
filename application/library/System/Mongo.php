@@ -73,8 +73,13 @@ class System_Mongo {
 		return $this;
     }
 
-    public function findOne($query){
-        $data = $this->collection->findOne($query);
+    public function findOne($query=array(), $fields=array()){
+        $data = $this->collection->findOne($query,$fields);
         return $data;
+    }
+
+    public function find($query=array(), $fields=array()){
+        $cursor = $this->collection->find($query, $fields);
+        return $cursor;
     }
 }
