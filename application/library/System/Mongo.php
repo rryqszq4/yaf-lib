@@ -41,7 +41,7 @@ class System_Mongo {
      * Description:静态方法，单例访问统一入口
      * @return Singleton：返回应用中的唯一对象实例
      */
-    public static function GetInstance()
+    public static function getInstance()
     {
         if (!(self::$instance instanceof self))
         {
@@ -53,7 +53,7 @@ class System_Mongo {
     /**
      * Description:获取数据库的私有方法的连接句柄
      */
-    public function GetDbConnect()
+    public function getDbConnect()
     {
         return $this->db;
     }

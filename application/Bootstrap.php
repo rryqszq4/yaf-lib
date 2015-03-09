@@ -6,6 +6,11 @@ class Bootstrap extends Yaf_Bootstrap_Abstract{
 		Yaf_Registry::set('config', $arrConfig);
 	}
 
+    public function _initLoader(Yaf_Dispatcher $dispatcher) {
+
+        Yaf_Loader::getInstance()->registerLocalNameSpace(array("System"));
+    }
+
 	public function _initRoute(Yaf_Dispatcher $dispatcher){
 	
 	}
