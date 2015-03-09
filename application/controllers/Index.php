@@ -1,12 +1,27 @@
 <?php
-class IndexController extends Yaf_Controller_Abstract {
+class IndexController extends Controller {
 	
 	public function indexAction(){
 
-        $test = System_Mongo::GetInstance();
+        new Model();
+
+        $test = System_Mongo::GetInstance()->conn()
+            ->selectDB('gamedb')
+            ->selectCollection('entity_ff14_ClassJob')
+            ->findOne(array('Key'=>intval(1)));
+
+        DebugTools::print_r($test);
+
+        $test = System_Mongo::GetInstance()->conn()
+            ->selectDB('gamedb')
+            ->selectCollection('entity_ff14_ClassJob')
+            ->find(array());
+
+        foreach ($test as $doc){
+            DebugTools::print_r($doc);
+        }
 
 
-        //DebugTools::print_r($test);
 
 		$this->getView()->assign("content",  "Hello World");
 		return TRUE;
