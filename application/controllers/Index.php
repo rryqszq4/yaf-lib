@@ -7,7 +7,7 @@ class IndexController extends Controller {
         $test = $test->getOne();
         DebugTools::print_r($test);
 
-        /*$test = System_Mongo::getInstance()->conn()
+        $test = System_Mongo::getInstance()->conn()
             ->selectDB('gamedb')
             ->selectCollection('entity_ff14_ClassJob')
             ->findOne(array('Key'=>intval(1)));
@@ -17,11 +17,11 @@ class IndexController extends Controller {
         $test = System_Mongo::getInstance()->conn()
             ->selectDB('gamedb')
             ->selectCollection('entity_ff14_ClassJob')
-            ->find(array());
+            ->select(array(),array(),array(),3);
 
         foreach ($test as $doc){
             DebugTools::print_r($doc);
-        }*/
+        }
 
 
 

@@ -82,4 +82,25 @@ class System_Mongo {
         $cursor = $this->collection->find($query, $fields);
         return $cursor;
     }
+
+    public function select($query=array(),$fields=array(),$sort=array(),$limit=0,$skip=0){
+        // 得到集合
+        $col = $this->collection;
+        // 结果集偏历
+        $cursor  = $col->find($query,$fields);
+        // 排序
+        if($sort){
+            $cursor->sort($sort);
+        }
+        // 跳过记录数
+        if($skip > 0){
+            $cursor->skip($skip);
+        }
+        // 取多少行记录
+        if($limit > 0){
+            $cursor->limit($limit);
+        }
+
+        return $cursor;
+    }
 }

@@ -27,4 +27,8 @@ class TestModel extends Model{
         return $this->handler->find();
     }
 
+    public function select(){
+        return $this->handler->select();
+    }
+
 }
