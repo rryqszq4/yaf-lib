@@ -7,11 +7,15 @@ class LayoutPlugin extends Yaf_Plugin_Abstract {
 
     public function __construct($layoutFile, $layoutDir=null){
         $this->_layoutFile = $layoutFile;
-        $this->_layoutDir = ($layoutDir) ? $layoutDir : APP_PATH.'/views/';
+        $this->_layoutDir = $layoutDir;
     }
 
     public function  __set($name, $value) {
         $this->_layoutVars[$name] = $value;
+    }
+
+    public function setFile($file){
+        $this->_layoutFile = $file;
     }
 
     public function dispatchLoopShutdown ( Yaf_Request_Abstract $request , Yaf_Response_Abstract $response ){
