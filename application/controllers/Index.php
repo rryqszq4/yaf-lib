@@ -3,16 +3,22 @@ class IndexController extends Controller {
 	
 	public function indexAction(){
 
-        $test = new TestModel();
-        $test = $test->getOne();
-        DebugTools::print_r($test);
+        /*$test_model = new TestModel();
 
-        $test = System_Mongo::getInstance()->conn()
+        $test = $test_model->getOne();
+        DebugTools::print_r($test);
+        DebugTools::print_r($test_model->dc_close());
+*/
+
+
+        /*$test = System_Mongo::getInstance()->conn()
             ->selectDB('gamedb')
             ->selectCollection('entity_ff14_ClassJob')
             ->findOne(array('Key'=>intval(1)));
 
         DebugTools::print_r($test);
+        $a = System_Mongo::getInstance()->close();
+        DebugTools::print_r($a.'a');
 
         $test = System_Mongo::getInstance()->conn()
             ->selectDB('gamedb')
@@ -21,7 +27,10 @@ class IndexController extends Controller {
 
         foreach ($test as $doc){
             DebugTools::print_r($doc);
-        }
+        }*/
+
+
+
 
 
 

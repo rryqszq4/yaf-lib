@@ -35,4 +35,20 @@ class Model {
     protected function init(){
 
     }
+
+    public function __destruct(){
+
+    }
+
+    public function dc_close(){
+        if ($this->data_center == 'Mongo'){
+            $system_dc = "System_".$this->data_center;
+            return $system_dc::getInstance()->close();
+        }else if ($this->data_center == 'Mysql'){
+
+        }else {
+
+        }
+    }
+
 }

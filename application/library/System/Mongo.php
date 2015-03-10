@@ -27,7 +27,6 @@ class System_Mongo {
      */
     private function __construct()
     {
-
     }
 
     /**
@@ -48,14 +47,6 @@ class System_Mongo {
             self::$instance = new self();
         }
         return self::$instance;
-    }
-
-    /**
-     * Description:获取数据库的私有方法的连接句柄
-     */
-    public function getDbConnect()
-    {
-        return $this->db;
     }
 
     public function conn(){
@@ -102,5 +93,12 @@ class System_Mongo {
         }
 
         return $cursor;
+    }
+
+    public function close(){
+        if ($this->connection->connected)
+            return $this->connection->close();
+        else
+            return true;
     }
 }
