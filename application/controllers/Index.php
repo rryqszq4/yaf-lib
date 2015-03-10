@@ -3,12 +3,12 @@ class IndexController extends Controller {
 	
 	public function indexAction(){
 
-        /*$test_model = new TestModel();
+        $test_model = new TestModel();
 
         $test = $test_model->getOne();
         DebugTools::print_r($test);
         DebugTools::print_r($test_model->dc_close());
-*/
+
 
 
         /*$test = System_Mongo::getInstance()->conn()
