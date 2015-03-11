@@ -1,14 +1,17 @@
 <?php
 class Bootstrap extends Yaf_Bootstrap_Abstract{
-	
+
+    private $_config;
+
 	public function _initConfig(){
-		$arrConfig = Yaf_Application::app()->getConfig();
-		Yaf_Registry::set('config', $arrConfig);
+		$this->_config = Yaf_Application::app()->getConfig();
+		Yaf_Registry::set('config', $this->_config);
 	}
 
     public function _initLoader(Yaf_Dispatcher $dispatcher) {
 
         Yaf_Loader::getInstance()->registerLocalNameSpace(array("System"));
+        Yaf_Loader::getInstance()->import($this->_config->application->directory.'/widgets/Index.php');
     }
 
 	public function _initRoute(Yaf_Dispatcher $dispatcher){
