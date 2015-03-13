@@ -37,7 +37,7 @@ class Model {
     }
 
     public function __destruct(){
-
+        $this->dc_close();
     }
 
     public function dc_close(){

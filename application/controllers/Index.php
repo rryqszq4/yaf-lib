@@ -1,13 +1,21 @@
 <?php
 class IndexController extends Controller {
-	
+
+
+
 	public function indexAction(){
+
+
+        /*$this->getRequest()->widget = function(){
+            echo 'call widget';
+        };*/
+        #DebugTools::print_r($this->getRequest());
 
         $test_model = new TestModel();
 
         $test = $test_model->getOne();
         DebugTools::print_r($test);
-        DebugTools::print_r($test_model->dc_close());
+        #DebugTools::print_r($test_model->dc_close());
 
 
 

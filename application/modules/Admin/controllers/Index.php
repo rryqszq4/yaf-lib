@@ -8,6 +8,6 @@
 class IndexController extends Controller {
 
     public function IndexAction(){
-        echo "[moduel admin]";
+        echo "[module admin]";
     }
 }
