@@ -2,15 +2,19 @@
 
 yaf-lib 基于yaf框架，添加了自己的类库，使yaf更加丰满
 
-#library
+##requirement
 
-## Controller
+- php 5.3+
 
-## Model
+##library
 
-## Widget
+### Controller
 
-## System_Mongo
+### Model
 
-## System_Socket
+### Widget
+
+### System_Mongo
+
+### System_Socket
 
