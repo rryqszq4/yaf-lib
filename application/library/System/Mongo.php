@@ -50,7 +50,14 @@ class System_Mongo {
     }
 
     public function conn(){
-		$this->connection = new MongoClient('mongodb://root:root@127.0.0.1:27017/gamedb');
+        $mongo_config = Yaf_Registry::get('config');
+        $options = array(
+            'connect' => $mongo_config->mongo->connect,
+            'username' => $mongo_config->mongo->username,
+            'password' => $mongo_config->mongo->password,
+            'db' => $mongo_config->mongo->db,
+        );
+		$this->connection = new MongoClient($mongo_config->mongo->server, $options);
 		return $this;
     }
 
