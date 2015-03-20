@@ -43,10 +43,11 @@ System_Mongo类封装了mongodb的客户端接口。
 System_Socket类对网络socket进行封装
 
 #### System_Memcache
-* ::set 设置缓存
-* ::get 获取缓存
-* ::delete 删除缓存
-* ::flush 清空
-* ::increment 原子计数加
-* ::decrement 原子计数减
+System_Memcache类封装了Memcached的客户端接口
+  * ::set 设置缓存
+  * ::get 获取缓存
+  * ::delete 删除缓存
+  * ::flush 清空
+  * ::increment 原子计数加
+  * ::decrement 原子计数减
 
