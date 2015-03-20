@@ -7,13 +7,15 @@
 class System_Memcache
 {
 
+    private static $pool;
+
     private static $instance;
 
     private static function init(){
-        if (!self::$instance){
-            self::$instance = new Memcache();
+        if (!self::$pool){
+            self::$pool = new Memcache();
             $config = Yaf_Registry::get('config');
-            self::$instance->addserver(
+            self::$pool->addserver(
                 $config->memcache->host,
                 $config->memcache->port,
                 true,
@@ -26,7 +28,7 @@ class System_Memcache
     {
         self::init();
 
-        $ret = self::$instance->get($key);
+        $ret = self::$pool->get($key);
 
         return $ret;
     }
@@ -35,7 +37,7 @@ class System_Memcache
     {
         self:init();
 
-        $ret = self::$instance->delete($key);
+        $ret = self::$pool->delete($key);
 
         return $ret;
     }
@@ -45,7 +47,7 @@ class System_Memcache
     {
         self::init();
 
-        $ret = self::$instance->set($key, $value, MEMCACHE_COMPRESSED, $ttl);
+        $ret = self::$pool->set($key, $value, MEMCACHE_COMPRESSED, $ttl);
 
         return $ret;
 
@@ -55,18 +57,34 @@ class System_Memcache
     {
         self::init();
 
-        return self::$instance->flush();
+        return self::$pool->flush();
     }
 
     public static function increment($key,$value){
         self::init();
 
-        return self::$instance->increment($key,$value);
+        return self::$pool->increment($key,$value);
     }
 
     public static function decrement($key, $value){
         self::init();
 
-        return self::$instance->decrement($key, $value);
+        return self::$pool->decrement($key, $value);
+    }
+
+    private function __construct(){
+
+    }
+
+    private function __clone(){
+
+    }
+
+    public function __destruct(){
+
+    }
+
+    public static function getInstance(){
+
     }
 }
