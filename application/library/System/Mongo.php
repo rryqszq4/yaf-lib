@@ -51,14 +51,14 @@ class System_Mongo {
     }
 
     public function conn(){
-        $mongo_config = Yaf_Registry::get('config');
+        $config = Yaf_Registry::get('config');
         $options = array(
-            'connect' => $mongo_config->mongo->connect,
-            'username' => $mongo_config->mongo->username,
-            'password' => $mongo_config->mongo->password,
-            'db' => $mongo_config->mongo->db,
+            'connect' => $config->mongo->connect,
+            'username' => $config->mongo->username,
+            'password' => $config->mongo->password,
+            'db' => $config->mongo->db,
         );
-		$this->connection = new MongoClient($mongo_config->mongo->server, $options);
+		$this->connection = new MongoClient($config->mongo->server, $options);
 		return $this;
     }
 
