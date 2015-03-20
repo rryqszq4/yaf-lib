@@ -31,14 +31,22 @@ $widget('IndexWidget',
 
 #### System_Mongo
 System_Mongo类封装了mongodb的客户端接口。
-conn()用于连接mongo
-selectDB()选择数据库
-selectCollection()选择文档
-findOne()获取一条数据
-find()获取数据列表
-select()选择数据可以排序或区间
-close()关闭连接
+    *conn()用于连接mongo
+    *selectDB()选择数据库
+    *selectCollection()选择文档
+    *findOne()获取一条数据
+    *find()获取数据列表
+    *select()选择数据可以排序或区间
+    *close()关闭连接
 
 #### System_Socket
 System_Socket类对网络socket进行封装
+
+#### System_Memcache
+    *::set 设置缓存
+    *::get 获取缓存
+    *::delete 删除缓存
+    *::flush 清空
+    *::increment 原子计数加
+    *::decrement 原子计数减
 
