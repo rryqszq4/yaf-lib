@@ -27,6 +27,7 @@ class System_Mongo {
      */
     private function __construct()
     {
+        $this->conn();
     }
 
     /**

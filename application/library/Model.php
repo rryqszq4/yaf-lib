@@ -22,7 +22,6 @@ class Model {
         if ($this->data_center == 'Mongo'){
             $system_dc = "System_".$this->data_center;
             $this->handler = $system_dc::getInstance()
-                ->conn()
                 ->selectDB($this->db)
                 ->selectCollection($this->table);
         }else if ($this->data_center == 'Mysql'){
