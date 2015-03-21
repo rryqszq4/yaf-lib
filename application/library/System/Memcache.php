@@ -11,6 +11,8 @@ class System_Memcache
 
     private static $instance;
 
+    private $mc;
+
     private static function init(){
         if (!self::$pool){
             self::$pool = new Memcache();
@@ -72,8 +74,14 @@ class System_Memcache
         return self::$pool->decrement($key, $value);
     }
 
-    private function __construct(){
+    public static function getExtendedStats(){
+        self::init();
 
+        return self::$pool->getExtendedStats();
+    }
+
+    private function __construct(){
+        $this->connect();
     }
 
     private function __clone(){
@@ -81,10 +89,42 @@ class System_Memcache
     }
 
     public function __destruct(){
-
+        $this->close();
     }
 
     public static function getInstance(){
-
+        if (!(self::$instance instanceof self)){
+            self::$instance = new self();
+        }
+        return self::$instance;
     }
+
+    public function connect(){
+        $config = Yaf_Registry::get('config');
+
+        $this->mc = new Memcache();
+        $this->mc->connect(
+            $config->memcache->host,
+            $config->memcache->port
+        );
+        return $this;
+    }
+
+    public function close(){
+        return $this->mc->close();
+    }
+
+    public function getVersion(){
+        return $this->mc->getVersion();
+    }
+
+    public function getStats(){
+        return $this->mc->getStats();
+    }
+
+    public function getServerStatus($host, $port){
+        return $this->mc->getServerStatus($host, $port);
+    }
+
+
 }
