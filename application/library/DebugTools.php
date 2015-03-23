@@ -13,7 +13,7 @@ class DebugTools {
 
     static public function print_r($val=NULL){
         echo "<p style='margin: 0;padding: 0;'>==================== DebugTools::print_r start; ===================</p>";
-        echo "<pre style='margin: 0;padding: 0;color: #dd1144;'>";
+        echo "<pre style='margin: 0;padding: 0;color: #dd1144;white-space: pre-wrap;word-wrap: break-word;'>";
         if (is_array($val))
             print_r($val);
         else if (is_string($val))

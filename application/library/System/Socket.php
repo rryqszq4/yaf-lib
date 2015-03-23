@@ -264,7 +264,7 @@ class System_Socket
     {
         $return = @socket_read($this->resource, $length, $type);
         if ($return === false) {
-            throw new Exception_Socket($this->resource);
+            #throw new Exception_Socket($this->resource);
         }
         return $return;
     }

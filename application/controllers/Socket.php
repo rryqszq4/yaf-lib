@@ -13,14 +13,24 @@ class SocketController extends Controller {
         $socket->connect('127.0.0.1',8021);
         $in = array(
             'gamedb',
-            'entity_ff14_ClassJob',
+            'entity_hs_card_zhcn',
             array("key",1)
         );
         $in = msgpack_pack($in);
         $socket->write($in, strlen($in));
-        $out = $socket->read(1024, PHP_NORMAL_READ);
 
-        DebugTools::print_r($out);
+        $out = '';
+        $res = '';
+        while (true){
+            $out = $socket->read(1024, PHP_NORMAL_READ);
+            if ($out === false){
+                break;
+            }
+            $res .= $out;
+
+        }
+
+        DebugTools::print_r($res);
 
         return false;
     }
