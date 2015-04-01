@@ -103,6 +103,11 @@ class System_Mongo {
         return $cursor;
     }
 
+    public function insert($query=array(),$option=array()){
+        $res = $this->collection->insert($query, $option);
+        return $res;
+    }
+
     public function close(){
         if ($this->connection->connected)
             return $this->connection->close();
