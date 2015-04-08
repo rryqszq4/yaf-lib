@@ -20,4 +20,18 @@ class System_Sort {
         }
         return $arr;
     }
+
+    static public function selection($arr){
+        $n = count($arr);
+        for ($i=0; $i < $n-1; $i++){
+            for ($j=$i+1,$least=$i; $j < $n; $j++){
+                if ($arr[$j] < $arr[$least])
+                    $least = $j;
+            }
+            $tmp = $arr[$i];
+            $arr[$i] = $arr[$least];
+            $arr[$least] = $tmp;
+        }
+        return $arr;
+    }
 }
