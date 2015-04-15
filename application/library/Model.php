@@ -19,6 +19,14 @@ class Model {
     public function __construct(){
         $this->init();
 
+        $this->set_handler();
+    }
+
+    protected function init(){
+
+    }
+
+    protected function set_handler(){
         if ($this->data_center == 'Mongo'){
             $system_dc = "System_".$this->data_center;
             $this->handler = $system_dc::getInstance()
@@ -29,10 +37,6 @@ class Model {
         }else {
 
         }
-    }
-
-    protected function init(){
-
     }
 
     public function __destruct(){
