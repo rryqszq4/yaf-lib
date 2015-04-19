@@ -53,6 +53,11 @@ System_Memcache类封装了Memcached的客户端接口
   * ::increment 原子计数加
   * ::decrement 原子计数减
 
+#### System_Sort
+System_Sort类封装了一些经典得排序算法
+  * ::insertion 插入排序
+  * ::selection 选择排序
+  * ::bubble    冒泡排序
 
 ##tools
 #### xhprof
