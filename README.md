@@ -53,6 +53,19 @@ System_Memcache类封装了Memcached的客户端接口
   * ::increment 原子计数加
   * ::decrement 原子计数减
 
+#### System_Mysqlpdo
+System_Mysqlpdo类封装了pdo_mysql的操作接口
+  * ::bind
+  * ::bindmore
+  * ::query
+  * ::lastInsertId
+  * ::column
+  * ::row
+  * ::single
+
+#### System_Log
+System_Log类封装了日志处理类
+
 #### System_Sort
 System_Sort类封装了一些经典得排序算法
   * ::insertion 插入排序
