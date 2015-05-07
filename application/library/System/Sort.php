@@ -48,4 +48,25 @@ class System_Sort {
         }
         return $arr;
     }
+
+    static private function al_merge($a,$b){
+        $c = array();
+        while (count($a) && count($b)){
+            $c[] = $a[0] < $b[0] ? array_shift($a) : array_shift($b);
+        }
+        return array_merge($c,$a,$b);
+    }
+
+    static public function merge($arr){
+        $count = count($arr);
+        if ($count <= 1)
+            return $arr;
+        $mid = intval($count/2);
+        $left = array_slice($arr,0,$mid);
+        $right = array_slice($arr,$mid);
+        $left = self::merge($left);
+        $right = self::merge($right);
+        $arr = self::al_merge($left,$right);
+        return $arr;
+    }
 }
