@@ -34,6 +34,7 @@ class HproseController extends Controller {
         $server->setDebugEnabled();
         $server->addFunction('hello');
         $server->addFunctions(array('e', 'ee'));
+        $server->add(new TestModel(), "testmodel");
         $server->addAsyncFunction('asyncHello');
         $server->start();
 
@@ -44,17 +45,21 @@ class HproseController extends Controller {
 
         $client = new HproseHttpClient('http://yaf.zhaoquan.com/hprose/httpserver');
         echo $client->hello('World');
+        echo $client->testmodel->e();
 
         return false;
     }
 
     public function swooletcpclientAction(){
         $test = new HproseSwooleClient("tcp://127.0.0.1:1504");
-        $args = array("world");
-        var_dump($test->invoke("hello", $args, 0, HproseResultMode::Serialized, 0));
-        var_dump($test->invoke("hello", $args, 0, HproseResultMode::Raw, 0));
-        var_dump($test->invoke("hello", $args, 0, HproseResultMode::RawWithEndTag, 0));
-        echo $test->hello("yaf");
+        #$args = array("world");
+        #var_dump($test->invoke("hello", $args, 0, HproseResultMode::Serialized, 0));
+        #var_dump($test->invoke("hello", $args, 0, HproseResultMode::Raw, 0));
+        #var_dump($test->invoke("hello", $args, 0, HproseResultMode::RawWithEndTag, 0));
+        #var_dump($test->A);
+        #echo $test->hello("yaf");
+        echo $test->TestModel_one();
+        #echo $test->b;
         /*try {
             $test->e();
         }

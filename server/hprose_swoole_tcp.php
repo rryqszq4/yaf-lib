@@ -23,10 +23,25 @@ function asyncHello($name, $callback) {
         $callback("Hello async $name!");
     });
 }
-$server = new HproseSwooleServer("tcp://0.0.0.0:1504");
+
+class TestModel {
+    public function one(){
+
+    }
+}
+
+class B {
+    public function aa(){
+        return "ced";
+    }
+}
+
+$server = new HproseSwooleServer("tcp://127.0.0.1:1504");
 $server->setErrorTypes(E_ALL);
 $server->setDebugEnabled();
-$server->addFunction('hello');
+#$server->addFunction('hello');
+$server->add(new TestModel(),'test');
+#$server->add(new B(),'b');
 #$server->addFunctions(array('e', 'ee'));
-$server->addAsyncFunction('asyncHello');
+#$server->addAsyncFunction('asyncHello');
 $server->start();
