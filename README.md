@@ -1,11 +1,11 @@
 # yaf-lib
 
-yaf-lib 基于yaf的应用开发框架
-简单的mvc中间层继承补充
-常用缓存、数据库等驱动类
-添加widget组件模块，及layout插件
-rpc服务化，支持hprose、yar等
-支持xhprof性能调试
+yaf-lib 基于yaf的应用开发框架，
+简单的mvc中间层继承补充，
+常用缓存、数据库等驱动类，
+添加widget组件模块，及layout插件，
+rpc服务化，支持hprose、yar等，
+支持xhprof性能调试。
 
 ##requirement
 
