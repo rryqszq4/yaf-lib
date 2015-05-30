@@ -77,4 +77,18 @@ System_Sort类封装了一些经典得排序算法
 #### xhprof
 - xhprof-0.9.4
 
+#### hprose-php
+- hprose-php 1.5.4
+
+##server
+####hprose_swoole_tcp.php
+rpc服务，tcp协议，支持方法、对象方法、异步等调用
+对象方法调用:
+```php
+//服务端代码
+$server->add(new TestModel(),'','test');
+//客户端调用
+$client->test->one();
+```
+
 
