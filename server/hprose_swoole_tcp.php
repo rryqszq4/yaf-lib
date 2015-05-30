@@ -26,7 +26,7 @@ function asyncHello($name, $callback) {
 
 class TestModel {
     public function one(){
-
+        return 'one';
     }
 }
 
@@ -40,7 +40,7 @@ $server = new HproseSwooleServer("tcp://127.0.0.1:1504");
 $server->setErrorTypes(E_ALL);
 $server->setDebugEnabled();
 #$server->addFunction('hello');
-$server->add(new TestModel(),'test');
+$server->add(new TestModel(),'','test');
 #$server->add(new B(),'b');
 #$server->addFunctions(array('e', 'ee'));
 #$server->addAsyncFunction('asyncHello');

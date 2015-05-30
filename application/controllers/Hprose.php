@@ -34,7 +34,7 @@ class HproseController extends Controller {
         $server->setDebugEnabled();
         $server->addFunction('hello');
         $server->addFunctions(array('e', 'ee'));
-        $server->add(new TestModel(), "testmodel");
+        $server->add(new TestModel(), "",'test');
         $server->addAsyncFunction('asyncHello');
         $server->start();
 
@@ -45,7 +45,7 @@ class HproseController extends Controller {
 
         $client = new HproseHttpClient('http://yaf.zhaoquan.com/hprose/httpserver');
         echo $client->hello('World');
-        echo $client->testmodel->e();
+        echo $client->test->edg();
 
         return false;
     }
@@ -58,7 +58,7 @@ class HproseController extends Controller {
         #var_dump($test->invoke("hello", $args, 0, HproseResultMode::RawWithEndTag, 0));
         #var_dump($test->A);
         #echo $test->hello("yaf");
-        echo $test->TestModel_one();
+        echo $test->test->one();
         #echo $test->b;
         /*try {
             $test->e();
