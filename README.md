@@ -91,6 +91,11 @@ System_Sort类封装了一些经典得排序算法
 - hprose-php 1.5.4
 
 ##server
+####index.php
+yaf的CLI模式的入口文件，在CLI模式下可以开发强大的服务端程序，支持swoole和hprose
+~~~sh
+php index.php request_uri="/hprose/swooletcpserver"
+~~~
 ####hprose_swoole_tcp.php
 rpc服务，tcp协议，支持方法、对象方法、异步等调用
 对象方法调用:
