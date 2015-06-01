@@ -58,7 +58,7 @@ class HproseController extends Controller {
         #var_dump($test->invoke("hello", $args, 0, HproseResultMode::RawWithEndTag, 0));
         #var_dump($test->A);
         #echo $test->hello("yaf");
-        echo $test->test->one();
+        echo $test->test->edg();
         #echo $test->b;
         /*try {
             $test->e();
@@ -140,5 +140,15 @@ class HproseController extends Controller {
         });*/
 
         return false;
+    }
+
+    public function swooletcpserverAction(){
+        $server = new HproseSwooleServer("tcp://127.0.0.1:1504");
+        $server->setErrorTypes(E_ALL);
+        $server->setDebugEnabled();
+
+        $server->add(new TestModel(),'','test');
+
+        $server->start();
     }
 }

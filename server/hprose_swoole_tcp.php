@@ -25,7 +25,7 @@ function asyncHello($name, $callback) {
 }
 
 class TestModel {
-    public function one(){
+    public function edg(){
         return 'one';
     }
 }

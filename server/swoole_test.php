@@ -39,6 +39,7 @@ $server->on("receive", function($server, $fd, $from_id, $data){
 
 $server->on("close", function($server, $fd){
     echo "close\n";
+    $server->shutdown();
 });
 
 $server->start();

@@ -23,13 +23,15 @@ class Controller extends Yaf_Controller_Abstract
 
 
     public function _setLayout(){
-        if (!$this->_layout){
-            $layout = Yaf_Registry::get('layout');
-            $layout->setFile($this->_layout);
-        }else {
-            if ($this->_layout != 'layout'){
+        if ($this->getRequest()->method != 'CLI'){
+            if (!$this->_layout){
                 $layout = Yaf_Registry::get('layout');
-                $layout->setFile($this->_layout.'.phtml');
+                $layout->setFile($this->_layout);
+            }else {
+                if ($this->_layout != 'layout'){
+                    $layout = Yaf_Registry::get('layout');
+                    $layout->setFile($this->_layout.'.phtml');
+                }
             }
         }
     }

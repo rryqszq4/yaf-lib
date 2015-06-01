@@ -1,5 +1,6 @@
 <?php
 #xhprof_enable(XHPROF_FLAGS_NO_BUILTINS | XHPROF_FLAGS_CPU | XHPROF_FLAGS_MEMORY);
+ini_set('display_errors',1);
 error_reporting(E_ALL);
 date_default_timezone_set('Asia/Shanghai');
 
