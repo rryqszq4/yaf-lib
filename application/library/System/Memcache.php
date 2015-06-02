@@ -81,7 +81,8 @@ class System_Memcache
     }
 
     private function __construct(){
-        $this->connect();
+        #$this->connect();
+        $this->pconnect();
     }
 
     private function __clone(){
@@ -104,6 +105,17 @@ class System_Memcache
 
         $this->mc = new Memcache();
         $this->mc->connect(
+            $config->memcache->host,
+            $config->memcache->port
+        );
+        return $this;
+    }
+
+    public function pconnect(){
+        $config = Yaf_Registry::get('config');
+
+        $this->mc = new Memcache();
+        $this->mc->pconnect(
             $config->memcache->host,
             $config->memcache->port
         );
