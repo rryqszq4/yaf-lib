@@ -51,14 +51,14 @@ class System_Mongo {
     }
 
     public function conn(){
-        $config = Yaf_Registry::get('config');
-        $options = array(
-            'connect' => $config->mongo->connect,
-            'username' => $config->mongo->username,
-            'password' => $config->mongo->password,
-            'db' => $config->mongo->db,
-        );
-		$this->connection = new MongoClient($config->mongo->server, $options);
+        $config = Yaf_Application::app()->getConfig();
+        DebugTools::print_r($config);
+        $options = array();
+        $options['connect'] = $config->mongo->connect;
+        !empty($config->mongo->username) ? $options['username'] = $config->mongo->username : "";
+        !empty($config->mongo->password) ? $options['password'] = $config->mongo->password : "";
+        $options['db'] = $config->mongo->db;
+        $this->connection = new MongoClient($config->mongo->server, $options);
 		return $this;
     }
 
@@ -109,7 +109,8 @@ class System_Mongo {
     }
 
     public function close(){
-        if ($this->connection->connected)
+        #if ($this->connection->connected)
+        if ($this->connection)
             return $this->connection->close();
         else
             return true;

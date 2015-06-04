@@ -16,8 +16,8 @@ class Model {
 
     protected $handler;
 
-    public function __construct(){
-        $this->init();
+    public function __construct($table=""){
+        $this->init($table);
 
         $this->set_handler();
     }
