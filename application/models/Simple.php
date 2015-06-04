@@ -13,6 +13,13 @@ class SimpleModel extends Model{
     public $table;
     private $handle;
 
+    public static $index_fields = array(
+        "name","title","othername","displayName","filtersex","story",
+        "useskill","pkskill","editersaid","startintro","centerintro",
+        "lateintro","recommendskillsintro","runeintro","talentintro",
+        "summonerskillintro","lesson"
+    );
+
     public function init($table){
         $this->data_center = "Mongo";
         $this->db = "gamedb";

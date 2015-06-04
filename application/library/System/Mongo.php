@@ -52,7 +52,6 @@ class System_Mongo {
 
     public function conn(){
         $config = Yaf_Application::app()->getConfig();
-        DebugTools::print_r($config);
         $options = array();
         $options['connect'] = $config->mongo->connect;
         !empty($config->mongo->username) ? $options['username'] = $config->mongo->username : "";

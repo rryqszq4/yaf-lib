@@ -16,6 +16,8 @@ class Model {
 
     protected $handler;
 
+    protected static $index_fields=array();
+
     public function __construct($table=""){
         $this->init($table);
 
