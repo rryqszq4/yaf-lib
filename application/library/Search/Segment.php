@@ -18,7 +18,7 @@ class Search_Segment {
     const SCWS_MULTI_ZMAIN = SCWS_MULTI_ZMAIN;
     const SCWS_MULTI_ZALL = SCWS_MULTI_ZALL;
 
-    public $tool;
+    public $tool = null;
 
     public function __construct($charset = "utf8"){
         $this->tool = scws_open();
