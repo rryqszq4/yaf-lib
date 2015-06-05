@@ -15,6 +15,7 @@ if (DEBUG_TOOLS){
 }
 
 require_once(APPLICATION_PATH."/application/tools/hprose-php/Hprose.php");
+require_once(APPLICATION_PATH."/application/tools/xapian/xapian.php");
 
 $app = new Yaf_Application(APPLICATION_PATH."/conf/application.ini");
 $app->getDispatcher()->dispatch(new Yaf_Request_Simple());

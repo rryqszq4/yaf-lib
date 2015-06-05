@@ -12,8 +12,14 @@ class XapianController extends Controller {
 
     public function indexAction(){
         echo "/xapian/index\n";
-        $se = new Search_Segment();
-        $se->cut();
+
+        $indexer = new Search_Index("gamedb");
+        $segmenter = new Search_Segment();
+        $query = $segmenter->query();
+        foreach ($query as $key=>$value){
+            $arr = $segmenter->cut($value);
+            $indexer->add($value,$arr);
+        }
         return false;
     }
 }
