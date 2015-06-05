@@ -22,4 +22,11 @@ class XapianController extends Controller {
         }
         return false;
     }
+
+    public function matchAction(){
+        $matcher = new Search_Match("gamedb");
+        $matcher->call("安妮 天使");
+
+        return false;
+    }
 }
