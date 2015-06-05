@@ -34,8 +34,9 @@ class Search_Segment {
         scws_set_charset($this->tool,"utf8");
         scws_set_dict($this->tool, self::ROOT."etc/dict.utf8.xdb");
         scws_set_rule($this->tool, self::ROOT."etc/rules.utf8.ini");
-        scws_set_ignore($this->tool, false);
-        scws_set_multi($this->tool,self::SCWS_MULTI_SHORT);
+        scws_set_ignore($this->tool, true); //清楚标点
+        scws_set_multi($this->tool,0);
+        #scws_set_multi($this->tool,self::SCWS_MULTI_SHORT);
         scws_set_duality($this->tool, false);
 
     }
@@ -46,21 +47,32 @@ class Search_Segment {
 
     public function query($model="SimpleModel"){
         $m = new $model;
-        $list = $m->getOne();
+        $list = $m->getList();
         return $list;
     }
 
-    public function cut($model="SimpleModel"){
-        $query = $this->query($model);
-        foreach ($query as $k=>$v){
-            if (in_array($k,$model::$index_fields)){
+    public function cut($queryOne,$fields=null){
+        if (empty($fields)) {
+            $fields = SimpleModel::$index_fields;
+        }
+
+        $text_arr = array();
+        foreach ($queryOne as $k=>$v){
+            $text = "";
+            if (in_array($k,$fields)){
+                echo $v."==>";
                 scws_send_text($this->tool,$v);
                 #$top = scws_get_tops($this->tool);
                 while($tmp = scws_get_result($this->tool)){
-                    DebugTools::print_r($tmp);
-                }
-            }
-        }
-
+                    foreach ($tmp as $kk=>$vv){
+                        echo $vv['word']." ";
+                        $text .= $vv['word']." ";
+                    }#foreach
+                }#while
+                echo "\n\n";
+                $text_arr[$k] = $text;
+            }#if
+        }#foreach
+        return $text_arr;
     }
 }

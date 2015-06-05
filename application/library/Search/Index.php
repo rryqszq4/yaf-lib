@@ -16,12 +16,20 @@ class Search_Index {
         $this->database = new XapianWritableDatabase(APPLICATION_PATH."/data/".$dbpath,
         Xapian::DB_CREATE_OR_OPEN);
         $this->indexer = new XapianTermGenerator();
-        $this->document = new XapianDocument();
     }
 
-    public function run($query){
-        foreach ($query as $key=>$value){
-            
+    public function add($query,$query_term){
+        $this->document = new XapianDocument();
+        $this->indexer->set_document($this->document);
+        foreach ($query_term as $key=>$value){
+            $this->indexer->index_text($value, 1, strtoupper($key));
+            $this->indexer->index_text($value);
         }
+        $this->document->set_data(json_encode($query));
+        $this->document->add_term("Q"."lol_hero".$query['_id']);
+
+        $this->database->add_document($this->document);
+
+        $this->database->commit();
     }
 }
