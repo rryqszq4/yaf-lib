@@ -83,6 +83,11 @@ System_Sort类封装了一些经典得排序算法
   * ::bubble    冒泡排序
   * ::merge     归并排序
 
+#### Search_Config
+#### Search_Segment
+#### Search_Index
+#### Search_Match
+
 ##tools
 #### xhprof
 - xhprof-0.9.4
