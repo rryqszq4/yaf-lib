@@ -8,9 +8,14 @@
 
 class Search_Index {
 
-    public $database = null;
-    public $indexer = null;
-    public $document = null;
+    const ID_PREFIX = 'Q';
+    const DEFAULT_PRIMARY_KEY = '_id';
+
+    private $database = null;
+    private $indexer = null;
+    private $document = null;
+    private $idprefix = '';
+    private $primarykey = '';
 
     public function __construct($dbpath="gamedb"){
         try {
@@ -22,16 +27,41 @@ class Search_Index {
         }
     }
 
-    public function add($query,$query_term){
+    public function __destruct(){
+        $this->database->close();
+    }
+
+    public function setIdPrefix($app='',$table='',$primary_key=''){
+        $this->idprefix = self::ID_PREFIX.$app.$table;
+        if (empty($primary_key))
+            $this->primarykey = self::DEFAULT_PRIMARY_KEY;
+        else
+            $this->primarykey = $primary_key;
+    }
+
+    private function _getIdTerm($id){
+        return $this->idprefix.$id;
+    }
+
+    public function add($query,$query_term,$other_term=array()){
         try {
             $this->document = new XapianDocument();
             $this->indexer->set_document($this->document);
             foreach ($query_term as $key=>$value){
-                $this->indexer->index_text($value, 1, strtoupper($key));
+                //$this->indexer->index_text($value, 1, strtoupper($key));
                 $this->indexer->index_text($value);
             }
+
+            if (!empty($other_term)){
+                foreach ($other_term as $key=>$value){
+                    $this->indexer->index_text($value);
+                }
+            }
+
             $this->document->set_data(json_encode($query));
-            $this->document->add_term("Q"."lol_hero".$query['_id']);
+
+            $id_term = $this->_getIdTerm($query[$this->primarykey]);
+            $this->document->add_term($id_term);
 
             $this->database->add_document($this->document);
 
@@ -40,4 +70,28 @@ class Search_Index {
             print $e->getMessage()."\n";
         }
     }
+
+    public function alert(){
+
+    }
+
+    public function delete($query){
+        try {
+            $id_term = $this->_getIdTerm($query[$this->primarykey]);
+            $this->database->delete_document($id_term);
+            $this->database->commit();
+        }catch (Exception $e){
+            print $e->getMessage()."\n";
+        }
+    }
+
+    public function flush(){
+        try{
+            $this->database->flush();
+            $this->database->commit();
+        }catch (Exception $e){
+            print $e->getMessage()."\n";
+        }
+    }
+
 }
