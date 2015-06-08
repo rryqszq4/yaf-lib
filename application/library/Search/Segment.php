@@ -19,6 +19,7 @@ class Search_Segment {
     const SCWS_MULTI_ZALL = SCWS_MULTI_ZALL;
 
     public $tool = null;
+    private $filter = array('p','uj','c','f','d','r','m');
 
     public function __construct($charset = "utf8"){
         $this->tool = scws_open();
@@ -35,7 +36,7 @@ class Search_Segment {
         scws_set_dict($this->tool, self::ROOT."etc/dict.utf8.xdb");
         scws_set_rule($this->tool, self::ROOT."etc/rules.utf8.ini");
         scws_set_ignore($this->tool, true); //清楚标点
-        scws_set_multi($this->tool,0);
+        scws_set_multi($this->tool,self::SCWS_MULTI_DUALITY);
         #scws_set_multi($this->tool,self::SCWS_MULTI_SHORT);
         scws_set_duality($this->tool, false);
 
@@ -51,7 +52,13 @@ class Search_Segment {
         return $list;
     }
 
-    public function cut($queryOne,$fields=null){
+    public function queryOne($model = "SimpleModel"){
+        $m = new $model;
+        $one = $m->getOne();
+        return $one;
+    }
+
+    public function cutQuery($queryOne,$fields=null){
         if (empty($fields)) {
             $fields = SimpleModel::$index_fields;
         }
@@ -60,19 +67,34 @@ class Search_Segment {
         foreach ($queryOne as $k=>$v){
             $text = "";
             if (in_array($k,$fields)){
-                echo $v."==>";
+                //echo $v."==>";
                 scws_send_text($this->tool,$v);
-                #$top = scws_get_tops($this->tool);
+                //$top = scws_get_tops($this->tool);
                 while($tmp = scws_get_result($this->tool)){
                     foreach ($tmp as $kk=>$vv){
-                        echo $vv['word']." ";
-                        $text .= $vv['word']." ";
+                        if (!in_array($vv['attr'],$this->filter)){
+                            //echo $vv['word']." ";
+                            $text .= $vv['word']." ";
+                        }
                     }#foreach
                 }#while
-                echo "\n\n";
+                //echo "\n\n";
                 $text_arr[$k] = $text;
             }#if
         }#foreach
         return $text_arr;
+    }
+
+    public function cutString($string){
+        $text = '';
+        scws_send_text($this->tool, $string);
+        while ($tmp = scws_get_result($this->tool)){
+            foreach ($tmp as $k=>$v){
+                if (!in_array($v['attr'],$this->filter)){
+                    $text .= $v['word'];
+                }
+            }
+        }
+        return $text;
     }
 }
