@@ -30,8 +30,22 @@ class XapianController extends Controller {
 
         //=> Search_Index::add /*
         foreach ($query as $key=>$value){
-            $arr = $segmenter->cut($value,$config->getIndex($this->table));
-            $indexer->add($value,
+            #$arr = $segmenter->cutQuery($value,$config->getIndex($this->table));
+            /*$indexer->add($value,
+                $arr,
+                array($config->getApp(),
+                    $config->getAppName(),
+                    $this->table,
+                    $config->getTableName($this->table)
+                )
+            );*/
+        }
+        // */
+
+        //=> Search_Index::al /*
+        foreach ($query as $key=>$value){
+            $arr = $segmenter->cutQuery($value,$config->getIndex($this->table));
+            $indexer->alert($value,
                 $arr,
                 array($config->getApp(),
                     $config->getAppName(),
@@ -48,11 +62,6 @@ class XapianController extends Controller {
             $indexer->delete($value);
         }
         // */
-
-        //=> Search_Index::flush
-        /*
-        $indexer->flush();
-        //*/
 
 
         return false;
@@ -78,4 +87,5 @@ class XapianController extends Controller {
         DebugTools::print_r($config);
         return false;
     }
+
 }

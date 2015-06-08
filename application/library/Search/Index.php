@@ -71,8 +71,32 @@ class Search_Index {
         }
     }
 
-    public function alert(){
+    public function alert($query,$query_term,$other_term=array()){
+        try {
+            $this->document = new XapianDocument();
+            $this->indexer->set_document($this->document);
+            foreach ($query_term as $key=>$value){
+                //$this->indexer->index_text($value, 1, strtoupper($key));
+                $this->indexer->index_text($value);
+            }
 
+            if (!empty($other_term)){
+                foreach ($other_term as $key=>$value){
+                    $this->indexer->index_text($value);
+                }
+            }
+
+            $this->document->set_data(json_encode($query));
+
+            $id_term = $this->_getIdTerm($query[$this->primarykey]);
+            $this->document->add_term($id_term);
+
+            $this->database->replace_document($id_term,$this->document);
+
+            $this->database->commit();
+        }catch (Exception $e){
+            print $e->getMessage()."\n";
+        }
     }
 
     public function delete($query){
@@ -85,13 +109,5 @@ class Search_Index {
         }
     }
 
-    public function flush(){
-        try{
-            $this->database->flush();
-            $this->database->commit();
-        }catch (Exception $e){
-            print $e->getMessage()."\n";
-        }
-    }
 
 }
