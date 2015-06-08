@@ -9,9 +9,16 @@ class Controller extends Yaf_Controller_Abstract
     public $_layout = 'layout';
 
     public function init(){
-        if ($this->getRequest()->method != 'CLI'){
+        if (!$this->getRequest()->isCli()){
             $this->_regWidget();
             $this->_setLayout();
+        }else {
+            try {
+                throw new Yaf_Exception("Environment is not in WEB mode.\n");
+            } catch (Yaf_Exception $e){
+                print $e->getMessage();
+                exit(1);
+            }
         }
     }
 
