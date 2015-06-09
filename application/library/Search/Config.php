@@ -14,8 +14,13 @@ class Search_Config {
     const INDEX_FIELDS = 'search_index';
     const PRIMARY_KEY = 'primary_key';
     const CN_NAME = 'cn_name';
+    const TITLE = 'title';
+    const DETAIL = 'detail';
+    const URL = 'url';
 
+    private static $instance;
     private $config = null;
+
 
     public function __construct($app="lol",$db="gamedb"){
         $file = APPLICATION_PATH.'/conf/'.$db.'/'.$app.'.php';
@@ -58,5 +63,14 @@ class Search_Config {
     public function getTableName($table){
         $value = $this->_getValue($table);
         return $value[self::CN_NAME];
+    }
+
+    public function formatTitle($table,$data){
+        $value = $this->_getValue($table);
+        $title = '';
+        foreach ($value[self::TITLE] as $k=>$v){
+            $title .= $data[$v].' ';
+        }
+        return $title;
     }
 }

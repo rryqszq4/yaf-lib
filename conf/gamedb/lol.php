@@ -10,15 +10,31 @@ return array(
     'app_name' => '英雄联盟',
     'app_id' => null,
     'tables' => array(
-        'hero',
+        'hero','item','skill'
     ),
     'hero' => array(
         'search_index'=>array('name','title','othername','displayName',
-                        'userskill','pkskill','editersaid'
+                        'useskill','pkskill','editersaid'
                     ),
         'primary_key' => '_id',
         'cn_name' => '英雄',
-        'url' => "http://cha.17173.com/lol/heros/details/{*}.html"
+        'url' => array("http://cha.17173.com/lol/heros/details/{*}.html",'_id'),
+        'title' => array('displayName','title'),
+        'detail' => array('editersaid'),
     ),
+    'item' => array(
+        'search_index'=>array('name','basicattribute'),
+        'primary_key' => '_id',
+        'cn_name' => '物品 装备',
+        'url' => array('http://cha.17173.com/lol/items/{*}.html','_id'),
+        'title' => array('name'),
+    ),
+    'skill' => array(
+        'search_index' => array('name','description','skillflow'),
+        'primary_key' => '_id',
+        'cn_name' => '技能',
+        'url' => array('http://cha.17173.com/lol/items/{*}.html','champion'),
+        'title' => array('name'),
+    )
 
 );
