@@ -296,8 +296,8 @@ class Jsonrpc_Client
         }
         $response = json_decode($http_body, true);
         if ($this->debug) {
-            error_log('==> Request: '.PHP_EOL.json_encode($payload, JSON_PRETTY_PRINT));
-            error_log('==> Response: '.PHP_EOL.json_encode($response, JSON_PRETTY_PRINT));
+            error_log('==> Request: '.PHP_EOL.json_encode($payload, JSON_NUMERIC_CHECK));
+            error_log('==> Response: '.PHP_EOL.json_encode($response, JSON_NUMERIC_CHECK));
         }
         return is_array($response) ? $response : array();
     }

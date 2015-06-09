@@ -12,6 +12,7 @@ class Bootstrap extends Yaf_Bootstrap_Abstract{
 
         Yaf_Loader::getInstance()->registerLocalNameSpace(array("System"));
         Yaf_Loader::getInstance()->import($this->_config->application->directory.'/widgets/Index.php');
+        Yaf_Loader::import($this->_config->application->directory."/tools/xapian/xapian.php");
     }
 
 	public function _initRoute(Yaf_Dispatcher $dispatcher){
