@@ -14,21 +14,32 @@ class SearchController extends Controller {
         Yaf_Dispatcher::getInstance()->returnResponse(false);
         Yaf_Dispatcher::getInstance()->enableView();
 
-        $keyword = isset($_GET['wd']) ? trim($_GET['wd']) : '卡牌';
-
-        $client = new Jsonrpc_Client('http://cha.internal.zhaoquan.com/search/server');
-        $client->debug = true;
-        $result = $client->execute('find',array($keyword));
-
+        $keyword = isset($_GET['wd']) ? trim($_GET['wd']) : '';
         $data = array();
-        foreach ($result['data'] as $k=>$v){
-            $configer = new Search_Config($v['app']);
-            $data[$k] = array(
-                'title' => $configer->formatTitle($v['table'],$v)
-            );
+        $keyword_cut = '';
+
+        if (!empty($keyword)){
+            $client = new Jsonrpc_Client('http://cha.internal.zhaoquan.com/search/server');
+            $client->debug = true;
+            $result = $client->execute('find',array($keyword));
+
+            $keyword_cut = $result['keyword'];
+
+            foreach ($result['data'] as $k=>$v){
+                $configer = new Search_Config($v['app']);
+                $data[$k] = array(
+                    'title' => $configer->formatTitle($v['table'],$v,$keyword_cut),
+                    'detail' => $configer->formatDetail($v['table'],$v,$keyword_cut),
+                    'url' => $configer->formatUrl($v['table'],$v),
+                    'image_url' => $configer->formatImage($v['table'],$v)
+                );
+            }
+
         }
 
-        DebugTools::print_r($data);
+        $this->getView()->assign('keyword',$keyword);
+        $this->getView()->assign('keyword_cut',$keyword_cut);
+        $this->getView()->assign('data',$data);
 
         return true;
     }
@@ -41,7 +52,7 @@ class SearchController extends Controller {
             $matcher = new Search_Match('gamedb');
 
             $text = $segmenter->cutString($keywords);
-            $data = $matcher->call($text,0,10);
+            $data = $matcher->call($text,0,12);
 
             return $result = array('keyword'=>$text,'data'=>$data);
         });

@@ -21,6 +21,7 @@ return array(
         'url' => array("http://cha.17173.com/lol/heros/details/{*}.html",'_id'),
         'title' => array('displayName','title'),
         'detail' => array('editersaid'),
+        'image_url' => array('http://i1.17173cdn.com/1tx6lh/YWxqaGBf/images/hero_skin/{*}_0.jpg','name',150),
     ),
     'item' => array(
         'search_index'=>array('name','basicattribute'),
@@ -28,13 +29,17 @@ return array(
         'cn_name' => '物品 装备',
         'url' => array('http://cha.17173.com/lol/items/{*}.html','_id'),
         'title' => array('name'),
+        'detail' => array('basicattribute'),
+        'image_url' => array('http://i1.17173cdn.com/1tx6lh/YWxqaGBf/images/item/{*}','itemicon',80),
     ),
     'skill' => array(
         'search_index' => array('name','description','skillflow'),
         'primary_key' => '_id',
         'cn_name' => '技能',
-        'url' => array('http://cha.17173.com/lol/items/{*}.html','champion'),
+        'url' => array('http://cha.17173.com/lol/heros/details/{*}.html','champion'),
         'title' => array('name'),
+        'detail' => array('description'),
+        'image_url' => array('http://i1.17173cdn.com/1tx6lh/YWxqaGBf/images/abilities/{*}','iconPath',70)
     )
 
 );
