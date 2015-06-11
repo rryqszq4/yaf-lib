@@ -17,15 +17,20 @@ class SearchController extends Controller {
         $keyword = isset($_GET['wd']) ? trim($_GET['wd']) : '';
         $data = array();
         $keyword_cut = '';
+        $count = 0;
+        $timed = 0;
 
         if (!empty($keyword)){
+            $start_time = microtime(true);
+
             $client = new Jsonrpc_Client('http://cha.internal.zhaoquan.com/search/server');
             $client->debug = true;
             $result = $client->execute('find',array($keyword));
 
             $keyword_cut = $result['keyword'];
 
-            foreach ($result['data'] as $k=>$v){
+            $count = $result['count'];
+            foreach ($result['list'] as $k=>$v){
                 $configer = new Search_Config($v['app']);
                 $data[$k] = array(
                     'title' => $configer->formatTitle($v['table'],$v,$keyword_cut),
@@ -35,10 +40,15 @@ class SearchController extends Controller {
                 );
             }
 
+            $end_time = microtime(true);
+            $timed =  round($end_time-$start_time ,4);
         }
+
 
         $this->getView()->assign('keyword',$keyword);
         $this->getView()->assign('keyword_cut',$keyword_cut);
+        $this->getView()->assign('count',$count);
+        $this->getView()->assign('timed',$timed);
         $this->getView()->assign('data',$data);
 
         return true;
@@ -54,7 +64,8 @@ class SearchController extends Controller {
             $text = $segmenter->cutString($keywords);
             $data = $matcher->call($text,0,12);
 
-            return $result = array('keyword'=>$text,'data'=>$data);
+            $data['keyword'] = $text;
+            return $data;
         });
 
         echo $server->execute();

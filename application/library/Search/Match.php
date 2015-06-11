@@ -26,21 +26,37 @@ class Search_Match {
         }
     }
 
+    private function _get_enquire_mset($offset,$limit){
+        return $this->enquire->get_mset($offset,$limit);
+    }
+
+    private function _get_hit_total(){
+        $doc_count = $this->database->get_doccount();
+        return $this->_get_enquire_mset(0,$doc_count)->size();
+    }
+
+    private function _get_timed($matches){
+
+    }
+
     public function call($querystring,$offset=0,$limit=10){
         $data = array();
 
         try {
             foreach ($this->prefixes as $k=>$v){
-                $this->parser->add_prefix($v,strtoupper($v));
+                #$this->parser->add_prefix($v,strtoupper($v));
             }
 
             $query = $this->parser->parse_query($querystring);
-            var_dump($query->get_description());
+            #var_dump($query->get_description());
 
             $this->enquire->set_query($query);
 
-            $matches = $this->enquire->get_mset($offset,$limit);
-            var_dump($matches->get_matches_estimated());
+            $count = $this->_get_hit_total();
+
+            $matches = $this->_get_enquire_mset($offset,$limit);
+
+            #var_dump($matches->get_matches_estimated());
 
             $start = $matches->begin();
             $end = $matches->end();
@@ -52,7 +68,7 @@ class Search_Match {
                 $fields = json_decode($doc->get_data());
                 #var_dump($fields);
                 $position = $offset + $index + 1;
-                print sprintf("%d: #%03d %s\n",$position,$docid,$fields->title);
+                #print sprintf("%d: #%03d %s\n",$position,$docid,$fields->title);
                 $data[] = $fields;
                 $start->next();
                 $index++;
@@ -61,6 +77,6 @@ class Search_Match {
             print $e->getMessage()."\n";
         }
 
-        return $data;
+        return array('count'=>$count,'list'=>$data);
     }
 }
