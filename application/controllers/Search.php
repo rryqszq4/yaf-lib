@@ -23,6 +23,7 @@ class SearchController extends Controller {
         $keyword_cut = '';
         $count = 0;
         $timed = 0;
+        $p_html = '';
 
         if (!empty($keyword)){
             $start_time = microtime(true);

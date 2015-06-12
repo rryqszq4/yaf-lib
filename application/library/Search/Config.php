@@ -83,16 +83,20 @@ class Search_Config {
     public function formatDetail($table,$data,$wd){
         $value = $this->_getValue($table);
         $detail = '';
+
         foreach ($value[self::DETAIL] as $k=>$v){
-            if (is_string($data[$v])){
+            $detail .= $this->_plusquery($data[$v]," ");
+            /*if (is_string($data[$v])){
                 $detail .= $data[$v].' ';
             }
             if (is_array($data[$v])){
                 foreach ($data[$v] as $kk=>$vv){
                     $detail .= $vv.' ';
                 }
-            }
+            }*/
         }
+        $detail = str_replace(array('<br>','<br />','<br/>'),' ',$detail);
+        #$detail = strip_tags($detail);
         $detail = $this->_replaceWord($detail,$wd);
         return $detail;
     }
@@ -115,5 +119,19 @@ class Search_Config {
             $text = str_replace(trim($v),"<em>{$v}</em>",$text);
         }
         return $text;
+    }
+
+    private function _plusquery($query,$delimiter=' '){
+        if (is_string($query)){
+            return $query.$delimiter;
+        }
+        if (is_array($query)){
+            $tmp = '';
+            foreach ($query as $k=>$v){
+                $tmp.= $this->_plusquery($v).$delimiter;
+            }
+            return $tmp;
+        }
+        return '';
     }
 }
