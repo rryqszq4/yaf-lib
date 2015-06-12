@@ -54,6 +54,10 @@ class Search_Match {
 
             $count = $this->_get_hit_total();
 
+            if ($offset > $count){
+                $offset = intval($count/$limit)*$limit;
+            }
+
             $matches = $this->_get_enquire_mset($offset,$limit);
 
             #var_dump($matches->get_matches_estimated());

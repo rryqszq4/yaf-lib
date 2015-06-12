@@ -388,6 +388,20 @@ class Paginator implements IteratorAggregate
             </div>";
     }
 
+    public function toSimpleHtml($paginationClsName="pagination")
+    {
+        $list = "";
+        foreach ($this->toArray() as $page) {
+            $tagClass = ($page["is_current"]) ? " class=\"active\" " : "";
+            $href = "<a href=\"{$page["url"]}\" {$tagClass}>{$page["label"]}</a>";
+            $list .= "{$href}";
+        }
+        return
+            "<div class=\"{$paginationClsName}\">
+                {$list}
+            </div>";
+    }
+
 
     public function __toString()
     {

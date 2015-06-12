@@ -6,7 +6,7 @@
  * Time: 下午2:25
  */
 
-class XapianController extends Controller {
+class XapianController extends Sontroller {
 
     public $_layout = null;
     public $table = '';
@@ -44,7 +44,12 @@ class XapianController extends Controller {
 
         //=> Search_Index::al /*
         foreach ($query as $key=>$value){
+            $alert_data = array();
             $arr = $segmenter->cutQuery($value,$config->getIndex($this->table));
+            #$alert_data[$config->getPrimaryKey($this->table)] = $value[$config->getPrimaryKey($this->table)];
+            #foreach ($config->getIndex($this->table) as $k=>$v){
+            #    $alert_data[$v] = $value[$v];
+            #}
             $indexer->alert($value,
                 $arr,
                 array($config->getApp(),
@@ -69,7 +74,7 @@ class XapianController extends Controller {
 
     public function matchAction(){
         $matcher = new Search_Match("gamedb");
-        $matcher->call("lol",0,200);
+        $matcher->call("卡牌",12,12);
 
         return false;
     }
