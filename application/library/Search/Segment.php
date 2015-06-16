@@ -46,9 +46,9 @@ class Search_Segment {
         scws_close($this->tool);
     }
 
-    public function query($model="SimpleModel"){
+    public function query($model="SimpleModel",$method="getList"){
         $m = new $model;
-        $list = $m->getList();
+        $list = $m->$method();
         return $list;
     }
 
@@ -91,10 +91,11 @@ class Search_Segment {
         while ($tmp = scws_get_result($this->tool)){
             foreach ($tmp as $k=>$v){
                 if (!in_array($v['attr'],$this->filter)){
-                    $text .= $v['word'];
+                    $text .= $v['word']." ";
                 }
             }
         }
         return $text;
     }
+
 }

@@ -18,6 +18,7 @@ class SearchController extends Controller {
         Yaf_Dispatcher::getInstance()->enableView();
 
         $keyword = isset($_GET['wd']) ? trim($_GET['wd']) : '';
+        $app = isset($_GET['app']) ? trim($_GET['app']) : '';
         $p = isset($_GET['p']) ? intval($_GET['p']) : 1;
         $data = array();
         $keyword_cut = '';
@@ -25,13 +26,19 @@ class SearchController extends Controller {
         $timed = 0;
         $p_html = '';
 
-        if (!empty($keyword)){
+        if (!empty($app)){
+            $keyword_app = empty($keyword) ? $app : $keyword.' AND '.$app;
+        }else {
+            $keyword_app = $keyword;
+        }
+
+        if (!empty($keyword_app)){
             $start_time = microtime(true);
             $this->_offset = $p-1 >= 0 ? ($p-1)*$this->_limit:0;
 
             $client = new Jsonrpc_Client('http://cha.internal.zhaoquan.com/search/server');
             $client->debug = true;
-            $result = $client->execute('find',array($keyword,$this->_offset,$this->_limit));
+            $result = $client->execute('find',array($keyword_app,$this->_offset,$this->_limit));
 
             $keyword_cut = $result['keyword'];
 

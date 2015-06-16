@@ -43,23 +43,28 @@ class Search_Index {
         return $this->idprefix.$id;
     }
 
-    public function add($query,$query_term,$other_term=array()){
+    public function add($query,$query_term,$other_term=array(),$sort_id=0){
         try {
             $this->document = new XapianDocument();
             $this->indexer->set_document($this->document);
             foreach ($query_term as $key=>$value){
                 //$this->indexer->index_text($value, 1, strtoupper($key));
                 $this->indexer->index_text($value);
+                $this->indexer->increase_termpos();
             }
 
             if (!empty($other_term)){
                 foreach ($other_term as $key=>$value){
                     $this->indexer->index_text($value);
+                    $this->indexer->increase_termpos();
                 }
             }
 
             $this->document->set_data(json_encode($query));
 
+            if (!empty($sort_id)){
+                $this->document->add_value(0,Xapian::sortable_serialise(intval($sort_id)));
+            }
             $id_term = $this->_getIdTerm($query[$this->primarykey]);
             $this->document->add_term($id_term);
 
@@ -71,22 +76,28 @@ class Search_Index {
         }
     }
 
-    public function alert($query,$query_term,$other_term=array()){
+    public function alert($query,$query_term,$other_term=array(),$sort_id=0){
         try {
             $this->document = new XapianDocument();
             $this->indexer->set_document($this->document);
             foreach ($query_term as $key=>$value){
                 //$this->indexer->index_text($value, 1, strtoupper($key));
                 $this->indexer->index_text($value);
+                #$this->indexer->increase_termpos();
             }
 
             if (!empty($other_term)){
                 foreach ($other_term as $key=>$value){
                     $this->indexer->index_text($value);
+                    #$this->indexer->increase_termpos();
                 }
             }
 
             $this->document->set_data(json_encode($query));
+
+            if (!empty($sort_id)){
+                $this->document->add_value(0,Xapian::sortable_serialise(intval($sort_id)));
+            }
 
             $id_term = $this->_getIdTerm($query[$this->primarykey]);
             $this->document->add_term($id_term);

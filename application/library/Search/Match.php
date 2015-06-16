@@ -35,9 +35,6 @@ class Search_Match {
         return $this->_get_enquire_mset(0,$doc_count)->size();
     }
 
-    private function _get_timed($matches){
-
-    }
 
     public function call($querystring,$offset=0,$limit=10){
         $data = array();
@@ -58,6 +55,8 @@ class Search_Match {
                 $offset = intval($count/$limit)*$limit;
             }
 
+            #$this->enquire->set_docid_order(XapianEnquire::DESCENDING);
+            #$this->enquire->set_sort_by_value_then_relevance(0,false);
             $matches = $this->_get_enquire_mset($offset,$limit);
 
             #var_dump($matches->get_matches_estimated());

@@ -18,6 +18,7 @@ class Search_Config {
     const DETAIL = 'detail';
     const URL = 'url';
     const IMAGE_URL = 'image_url';
+    const SORT_ID = 'sort_id';
 
     private static $instance;
     private $config = null;
@@ -64,6 +65,11 @@ class Search_Config {
     public function getTableName($table){
         $value = $this->_getValue($table);
         return $value[self::CN_NAME];
+    }
+
+    public function getSortId($table){
+        $value = $this->_getValue($table);
+        return $value[self::SORT_ID];
     }
 
     public function formatTitle($table,$data,$wd){
