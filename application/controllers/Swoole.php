@@ -6,7 +6,7 @@
  * Time: 下午5:10
  */
 
-class SwooleController extends Controller {
+class SwooleController extends Sontroller {
 
 
     public $_layout = null;
@@ -65,5 +65,41 @@ class SwooleController extends Controller {
         $server->start();
 
         return false;
+    }
+
+    public function processAction(){
+
+        $socket = stream_socket_server("tcp://127.0.0.1:9021", $errno, $errstr);
+
+
+        function callback_function(swoole_process $worker){
+            echo "process\n";
+            print_r($worker);
+            sleep(3);
+            echo posix_getpid();
+        }
+
+        $process = new swoole_process('callback_function',false,true);
+        $pid = $process->start();
+        print_r($pid);
+        #$wait = swoole_process::wait();
+        #print_r($wait);
+
+        echo posix_getpid();
+
+        if (!$socket) {
+            echo "$errstr ($errno)<br />\n";
+        } else {
+            while ($conn = stream_socket_accept($socket)) {
+                fwrite($conn, 'The local time is ' . date('n/j/Y g:i a') . "\n");
+                fclose($conn);
+                $wait = swoole_process::wait();
+            }
+            fclose($socket);
+        }
+    }
+
+    public function eventAction(){
+
     }
 }
