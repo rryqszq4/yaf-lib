@@ -13,11 +13,12 @@ class SwooleController extends Sontroller {
 
     public static $socket;
     public static $workers=array();
-    public static $worker_num = 2;
+    public static $worker_num = 4;
     public static $worker_last = 0;
     public static $a = 0;
     public static $stop = 0;
     public static $client;
+    public static $workers_pipe = array();
 
     public function clientAction(){
 
@@ -57,7 +58,7 @@ class SwooleController extends Sontroller {
         var_dump($server->setting);
 
         $server->on("connect", function($server, $fd){
-            echo "connect\n";
+            #echo "connect\n";
         });
 
         $server->on("receive", function($server, $fd, $from_id, $data){
@@ -66,8 +67,8 @@ class SwooleController extends Sontroller {
         });
 
         $server->on("close", function($server, $fd){
-            echo "close\n";
-            $server->shutdown();
+            #echo "close\n";
+            #$server->shutdown();
         });
 
         $server->start();
@@ -106,7 +107,24 @@ class SwooleController extends Sontroller {
             fclose($socket);
         }*/
 
-        SwooleController::$socket = stream_socket_server('tcp://127.0.0.1:9021',$errno=0,$errmsg='',STREAM_SERVER_BIND | STREAM_SERVER_LISTEN);
+        $context_option['socket']['backlog'] = 1024;
+        $context = stream_context_create($context_option);
+        SwooleController::$socket = stream_socket_server(
+            'tcp://127.0.0.1:9021',
+            $errno=0,
+            $errmsg='',
+            STREAM_SERVER_BIND | STREAM_SERVER_LISTEN,
+            $context
+        );
+
+        // 尝试打开tcp的keepalive，关闭TCP Nagle算法
+        if(function_exists('socket_import_stream'))
+        {
+            $s   = socket_import_stream($this->_mainSocket );
+            @socket_set_option($s, SOL_SOCKET, SO_KEEPALIVE, 1);
+            @socket_set_option($s, SOL_SOCKET, TCP_NODELAY, 1);
+        }
+
         stream_set_blocking(SwooleController::$socket,0);
 
         #$socket = System_Socket::create(AF_INET,SOCK_STREAM,0);
@@ -136,15 +154,16 @@ class SwooleController extends Sontroller {
 
             swoole_event_add($worker->pipe,function($pipe){
                 $recv = $GLOBALS['worker']->read();
-                echo $recv."-----$pipe\n";
+                #echo $recv."-----$pipe\n";
 
                 SwooleController::$client = @stream_socket_accept(SwooleController::$socket,0);
+                stream_set_blocking(SwooleController::$client,0);
                 $recv = $GLOBALS['worker']->write('0');
 
-
-                $message= fread(SwooleController::$client, 1024);
-                echo 'I have received that : '.$message;
-                fputs (SwooleController::$client, "{$pipe} OK\n");
+                #sleep(5);
+                $message= fread(SwooleController::$client, 8192);
+                #echo 'I have received that : '.$message;
+                fwrite(SwooleController::$client, "{$pipe} OK\n");
 
 
                 fclose(SwooleController::$client);
@@ -163,14 +182,19 @@ class SwooleController extends Sontroller {
             $pid = $process->start();
             SwooleController::$workers[$i] = $process;
             echo "Master: new worker, PID={$pid}\n";
+            SwooleController::$workers_pipe[$process->pipe] = $process;
+            swoole_event_add($process->pipe,function($pipe){
+                $read = SwooleController::$workers_pipe[$pipe]->read();
+                SwooleController::$stop = 0;
+            });
         }
 
         swoole_event_add(SwooleController::$socket,function ($fd){
-            print_r("stop--->>>>".SwooleController::$stop."\n");
+            #print_r("stop--->>>>".SwooleController::$stop."\n");
 
             if (!SwooleController::$stop){
 
-                print_r('___'.SwooleController::$socket."\n");
+                #print_r('___'.SwooleController::$socket."\n");
 
                 $w_i = (SwooleController::$worker_last+1)%SwooleController::$worker_num;
                 SwooleController::$worker_last = $w_i;
@@ -178,10 +202,11 @@ class SwooleController extends Sontroller {
                 SwooleController::$workers[$w_i]->write('c');
                 SwooleController::$stop = 1;
             }else {
-                print_r("pipe_read_start\n");
-                $read = SwooleController::$workers[SwooleController::$worker_last]->read();
-                print_r("pipe_read--->>>>".$read."\n");
-                SwooleController::$stop = $read;
+                #print_r("pipe_read_start\n");
+                #$read = SwooleController::$workers[SwooleController::$worker_last]->read();
+                #print_r("pipe_read--->>>>".$read."\n");
+                #SwooleController::$stop = $read;
+                #echo 123;
             }
 
             #swoole_event_del($fd);
