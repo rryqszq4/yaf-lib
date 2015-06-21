@@ -34,7 +34,7 @@ class SwooleController extends Sontroller {
 
 
 
-        $client->connect('127.0.0.1', 9021, 0.5);
+        $client->connect('192.168.80.140', 9021, 0.5);
 
         $client->send('hello world!');
         echo $client->recv();
@@ -43,7 +43,7 @@ class SwooleController extends Sontroller {
     }
 
     public function serverAction(){
-        $server = new swoole_server("127.0.0.1", 9021, SWOOLE_PROCESS, SWOOLE_SOCK_TCP);
+        $server = new swoole_server("192.168.80.140", 9021, SWOOLE_PROCESS, SWOOLE_SOCK_TCP);
 
         $setting = array(
             'daemonize' => 0,
@@ -238,7 +238,7 @@ class SwooleController extends Sontroller {
         $context_option['socket']['backlog'] = 1024;
         $context = stream_context_create($context_option);
         SwooleController::$socket = stream_socket_server(
-            'tcp://127.0.0.1:9021',
+            'tcp://192.168.80.140:9021',
             $errno=0,
             $errmsg='',
             STREAM_SERVER_BIND | STREAM_SERVER_LISTEN,
@@ -248,7 +248,7 @@ class SwooleController extends Sontroller {
         // 尝试打开tcp的keepalive，关闭TCP Nagle算法
         if(function_exists('socket_import_stream'))
         {
-            $s   = socket_import_stream($this->_mainSocket );
+            $s   = socket_import_stream(SwooleController::$socket);
             @socket_set_option($s, SOL_SOCKET, SO_KEEPALIVE, 1);
             @socket_set_option($s, SOL_SOCKET, TCP_NODELAY, 1);
         }
