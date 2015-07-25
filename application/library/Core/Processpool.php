@@ -4,6 +4,8 @@
  * User: zhaoquan
  * Date: 15-6-26
  * Time: 下午4:32
+ *
+ * 进程池
  */
 
 class Core_Processpool {
@@ -27,6 +29,8 @@ class Core_Processpool {
     private $last_worker = 0;
 
     private static $read_events = array();
+
+    private static $write_events = array();
 
     private function __construct($socket_fd, $process_number)
     {
@@ -86,7 +90,7 @@ class Core_Processpool {
         }
     }
 
-    private function worker_callbase(swoole_process $worker){
+    private function worker_callback(swoole_process $worker){
         $this->worker_event_base = event_base_new();
         $event = event_new();
 
@@ -128,9 +132,40 @@ class Core_Processpool {
         $idx = intval($read_event);
         self::$read_events[$idx] = $read_event;
 
-        event_set(self::$read_events[$idx],$client,EV_READ|EV_PERSIST,'do_read',$idx);
+        event_set(self::$read_events[$idx],$client,EV_READ|EV_PERSIST,array($this, "worker_read"),$idx);
         event_base_set(self::$read_events[$idx],$this->worker_event_base);
         event_add(self::$read_events[$idx]);
+
+    }
+
+    private function worker_read($fd, $what ,$arg){
+        call_user_func(array($this,"read"), $fd);
+
+        $write_event = event_new();
+        self::$write_event[$arg] = $write_event;
+
+
+        event_set(self::$write_events[$arg],$fd,EV_WRITE|EV_PERSIST,array($this, "worker_write"),$arg);
+        event_base_set(self::$write_events[$arg], $this->worker_event_base);
+        event_add(self::$write_events[$arg]);
+
+        event_del(self::$read_events[$arg]);
+    }
+
+    private function worker_write($fd,$what,$arg){
+        call_user_func(array($this,"write"), $fd);
+
+        event_del(self::$write_events[$arg]);
+        unset(self::$write_events[$arg]);
+        unset(self::$read_events[$arg]);
+        fclose($fd);
+    }
+
+    public function read($fd){
+
+    }
+
+    public function write($fd){
 
     }
 }
