@@ -19,7 +19,10 @@ rpc服务化，支持hprose、yar等，
 ##library
 
 #### Controller
-Controller类继承Yaf_Controller_Abstract，控制器可以选择性的继承这个类，在类中实现了，layout、widget等初始化
+Controller类继承Yaf_Controller_Abstract，控制器可以选择性的继承这个类，在类中实现了，layout、widget等初始化。
+
+#### Sontroller
+Sontroller类继承Yaf_Controller_Abstract，工作在cli模式下。
 
 #### Model
 Model类是数据层的抽象类，所有数据对象都可以继承它，Model可以从不同的data_center分发数据。
@@ -38,6 +41,8 @@ $widget('IndexWidget',
     )
 );
 ```
+#### Core_Processpool
+Core_Processpool类封装了一个进程池。
 
 #### System_Mongo
 System_Mongo类封装了mongodb的客户端接口。
