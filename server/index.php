@@ -1,6 +1,7 @@
 <?php
 /**
  * php index.php request_uri="/swoole/server"
+ * php index.php -cswoole -aserver
  */
 ini_set('display_errors',1);
 error_reporting(E_ALL);
@@ -18,7 +19,12 @@ require_once(APPLICATION_PATH."/application/tools/hprose-php/Hprose.php");
 require_once(APPLICATION_PATH."/application/tools/xapian/xapian.php");
 
 $app = new Yaf_Application(APPLICATION_PATH."/conf/application.ini");
-$app->getDispatcher()->dispatch(new Yaf_Request_Simple());
+$request = new Yaf_Request_Simple();
+$opt = getopt("c:a:");
+if (isset($opt['c']) && isset($opt['a'])){
+    $request->setRequestUri($opt['c']."/".$opt['a']);
+}
+$app->getDispatcher()->dispatch($request);
 
 if (DEBUG_TOOLS){
     #DebugTools::useTimeMemory();
