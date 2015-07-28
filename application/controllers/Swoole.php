@@ -467,4 +467,47 @@ class SwooleController extends Sontroller {
             #fclose($socket);
         }
     }
+
+    public function yaf_pool_serverAction(){
+        $context_option['socket']['backlog'] = 1024;
+        $context = stream_context_create($context_option);
+        $socket = stream_socket_server(
+            'tcp://192.168.80.140:9021',
+            $errno=0,
+            $errmsg='',
+            STREAM_SERVER_BIND | STREAM_SERVER_LISTEN,
+            $context
+        );
+
+        // 尝试打开tcp的keepalive，关闭TCP Nagle算法
+        if(function_exists('socket_import_stream'))
+        {
+            $s   = socket_import_stream($socket);
+            @socket_set_option($s, SOL_SOCKET, SO_KEEPALIVE, 1);
+            @socket_set_option($s, SOL_SOCKET, TCP_NODELAY, 1);
+        }
+
+        stream_set_blocking($socket,0);
+
+        $server = Core_Processpool::create($socket, 4);
+
+        $server->read = function($fd){
+            $recv_buf = '';
+            while(1){
+                $buffer= fread($fd, 8192);
+                #echo "123\n";
+                if ($buffer===''||$buffer===false){
+
+                    break;
+                }
+                $recv_buf .= $buffer;
+            }
+        };
+
+        $server->write = function($fd){
+            $len = fwrite($fd, "ok\n");
+        };
+
+        $server->run();
+    }
 }
