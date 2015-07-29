@@ -6,10 +6,15 @@
  * @author chenzhidong
  */
 class ErrorController extends Controller {
+
+    public function init(){}
     //从2.1开始, errorAction支持直接通过参数获取异常
     public function errorAction($exception) {
         //1. assign to view engine
-        $this->_view->assign("message", $exception->getMessage());
-        return true;
+        //DebugTools::print_r($exception);
+        echo $exception->getMessage().PHP_EOL;
+        return false;
+        //$this->_view->assign("message", $exception->getMessage());
+        //return true;
     }
 }

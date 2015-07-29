@@ -87,4 +87,88 @@ class ZmqController extends Sontroller
         }
         printf("Average temperature for zipcode '%s' was %dF\n", $filter, (int)($total_temp/$update_nbr));
     }
+
+    public function ventilatorAction(){
+        $context = new ZMQContext();
+
+        $sender = new ZMQSocket($context, ZMQ::SOCKET_PUSH);
+        $sender->bind("tcp://127.0.0.1:5557");
+
+        echo "Press Enter when the workers are ready: ";
+        $fp = fopen('php://stdin','r');
+        $line = fgets($fp, 512);
+        fclose($fp);
+        echo "Sending tasks to workers...".PHP_EOL;
+
+        $sender->send(0);
+
+        $total_msec = 0;
+        for ($task_nbr = 0; $task_nbr < 100; $task_nbr++){
+            $workload = mt_rand(1, 100);
+            $total_msec += $workload;
+            $sender->send($workload);
+        }
+
+        printf("Total expected cost: %d msec\n",$total_msec);
+        sleep(1);
+
+    }
+
+    public function taskworkAction(){
+        $context = new ZMQContext();
+
+        $receiver = new ZMQSocket($context, ZMQ::SOCKET_PULL);
+        $receiver->connect("tcp://127.0.0.1:5557");
+
+        $sender = new ZMQSocket($context, ZMQ::SOCKET_PUSH);
+        $sender->connect("tcp://127.0.0.1:5558");
+
+        while (true){
+            $string = $receiver->recv();
+
+            echo $string . PHP_EOL;
+
+            usleep($string * 1000);
+
+            $sender->send("");
+        }
+    }
+
+    public function sinkAction(){
+        $context = new ZMQContext();
+        $receiver = new ZMQSocket($context, ZMQ::SOCKET_PULL);
+        $receiver->bind("tcp://127.0.0.1:5558");
+
+        $string = $receiver->recv();
+
+        $tstart = microtime(true);
+
+        $total_msec = 0;
+        for ($task_nbr = 0; $task_nbr < 100; $task_nbr++){
+            $string = $receiver->recv();
+            if ($task_nbr % 10 == 0){
+                echo ":";
+            }else {
+                echo ".";
+            }
+        }
+
+        $tend = microtime(true);
+
+        $total_msec = ($tend - $tstart) * 1000;
+        echo PHP_EOL;
+        printf("Total elapsed time: %d msec", $total_msec);
+        echo PHP_EOL;
+    }
+
+    public function multiple_pollerAction(){
+        $context = new ZMQSocket();
+
+        $receiver = new ZMQSocket($context, ZMQ::SOCKET_PULL);
+        $receiver->connect("tcp://127.0.0.1:5557");
+
+
+
+    }
+
 }
