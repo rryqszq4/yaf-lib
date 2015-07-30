@@ -9,6 +9,46 @@
 class ZmqController extends Sontroller
 {
 
+    public static $msgs = 1;
+
+    public function libevent_serverAction(){
+
+        function print_line($fd, $events, $arg){
+            echo "callback fired".PHP_EOL;
+            var_dump($arg[0]->recv());
+            $arg[0]->send("got msg ".ZmqController::$msgs);
+            if (ZmqController::$msgs++ >= 10){
+                event_base_loopexit($arg[1]);
+            }
+        }
+
+        $base = event_base_new();
+        $event = event_new();
+
+        $context = new ZMQContext();
+
+        $rep = $context->getSocket(ZMQ::SOCKET_REP);
+
+        $rep->bind("tcp://127.0.0.1:5555");
+
+        $fd = $rep->getSockOpt(ZMQ::SOCKOPT_FD);
+
+        event_set($event, $fd, EV_READ|EV_PERSIST, "print_line", array($rep, $base));
+
+        event_base_set($event, $base);
+
+        event_add($event);
+
+        event_base_loop($base);
+    }
+
+    public function libevent_clientAction(){
+        $queue = new ZMQSocket(new ZMQContext(), ZMQ::SOCKET_REQ, "mysocket1");
+        $queue->connect("tcp://127.0.0.1:5555");
+
+        var_dump($queue->send("hello there")->recv());
+    }
+
     public function requestAction(){
 
         $context = new ZMQContext();
@@ -162,12 +202,40 @@ class ZmqController extends Sontroller
     }
 
     public function multiple_pollerAction(){
-        $context = new ZMQSocket();
+        $context = new ZMQContext();
 
         $receiver = new ZMQSocket($context, ZMQ::SOCKET_PULL);
         $receiver->connect("tcp://127.0.0.1:5557");
 
+        $subscriber = new ZMQSocket($context, ZMQ::SOCKET_SUB);
+        $subscriber->connect("tcp://127.0.0.1:5556");
+        $subscriber->setSockOpt(ZMQ::SOCKOPT_SUBSCRIBE, "10001");
 
+        //DebugTools::print_r($context);
+        $poll = new ZMQPoll();
+        $poll->add($receiver, ZMQ::POLL_IN);
+        $poll->add($subscriber,ZMQ::POLL_IN);
+
+        $readable = $writeable = array();
+
+        while (true)
+        {
+            $events = $poll->poll($readable, $writeable);
+            if ($events > 0){
+                foreach ($readable as $socket){
+                    if ($socket === $receiver){
+                        $message = $socket->recv();
+                    }else if ($socket === $subscriber){
+                        $message = $socket->recv();
+                    }
+                }
+            }
+        }
+
+
+    }
+
+    public function multiple_readerAction(){
 
     }
 
