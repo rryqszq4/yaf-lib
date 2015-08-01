@@ -59,7 +59,7 @@ class ZmqController extends Sontroller
 
         $requester->connect("tcp://127.0.0.1:5555");
 
-        for ($request_nbr=0; $request_nbr != 10; $requester++)
+        for ($request_nbr=0; $request_nbr != 10; $request_nbr++)
         {
             printf("Sending request %d...\n", $request_nbr);
 
@@ -102,9 +102,12 @@ class ZmqController extends Sontroller
             $temperature = mt_rand(-80, 135);
             $relhumidity = mt_rand(10, 60);
 
-            $update = sprintf("%05d %d %d", $zipcode, $temperature, $relhumidity);
+            $update = sprintf("{%05d %d %d", $zipcode, $temperature, $relhumidity);
 
             $publisher->send($update);
+
+            sleep(1);
+            echo $update.PHP_EOL;
         }
     }
 
@@ -115,15 +118,17 @@ class ZmqController extends Sontroller
         $subscriber = new ZMQSocket($context, ZMQ::SOCKET_SUB);
         $subscriber->connect("tcp://127.0.0.1:5556");
 
-        $filter = "1001";
-        $subscriber->setSockOpt(ZMQ::SOCKOPT_SUBSCRIBE, $filter);
+        $filter = "{";
+        $subscriber->setSockOpt(ZMQ::SOCKOPT_SUBSCRIBE,$filter);
 
         $total_temp = 0;
         for($update_nbr = 0; $update_nbr < 100; $update_nbr++)
         {
             $string = $subscriber->recv();
-            sscanf($string, "%d %d %d", $zipcode, $temperature, $relhumidity);
+            sscanf($string, "{%d %d %d", $zipcode, $temperature, $relhumidity);
             $total_temp += $temperature;
+            echo $string.PHP_EOL;
+            sleep(2);
         }
         printf("Average temperature for zipcode '%s' was %dF\n", $filter, (int)($total_temp/$update_nbr));
     }
@@ -199,6 +204,73 @@ class ZmqController extends Sontroller
         echo PHP_EOL;
         printf("Total elapsed time: %d msec", $total_msec);
         echo PHP_EOL;
+    }
+
+    /*
+     * pub-rep and sub-req
+     */
+
+    public function pub_repAction(){
+        $config = array(
+            'key_1'=>'value_1',
+            'key_2'=>'value_2',
+            'key_3'=>'value_3'
+        );
+        $string = json_encode($config);
+
+        $clients = array('s1','s2','s3');
+
+        $context = new ZMQContext();
+
+        $pub = new ZMQSocket($context, ZMQ::SOCKET_PUB);
+
+        $pub->bind('tcp://127.0.0.1:5561');
+
+        $server = new ZMQSocket($context, ZMQ::SOCKET_REP);
+
+        $server->bind('tcp://127.0.0.1:5555');
+
+        while (count($clients) != 0)
+        {
+            $client_name = $server->recv();
+            echo "{$client_name} is connect!\n";
+            $key = array_search($client_name, $clients);
+            unset($clients[$key]);
+
+            echo "{$client_name} has come in!\n";
+            $server->send("version is 2.0\n");
+
+        }
+
+        $pub->send($string);
+    }
+
+    public function sub_reqAction(){
+        $hostname = "s3";
+
+        $context = new ZMQContext();
+
+        $sub = new ZMQSocket($context, ZMQ::SOCKET_SUB);
+        $sub->connect("tcp://127.0.0.1:5561");
+
+        $sub->setSockOpt(ZMQ::SOCKOPT_SUBSCRIBE, "");
+
+        $client = $context->getSocket(ZMQ::SOCKET_REQ);
+        $client->connect("tcp://127.0.0.1:5555");
+
+        while (1)
+        {
+            $client->send($hostname);
+            $version = $client->recv();
+            echo $version;
+
+            if (!empty($version)){
+                $recive = $sub->recv();
+                $vars = json_decode($recive);
+                var_dump($vars);
+            }
+        }
+
     }
 
     public function multiple_pollerAction(){
