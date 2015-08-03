@@ -308,7 +308,38 @@ class ZmqController extends Sontroller
     }
 
     public function multiple_readerAction(){
+        $context = new ZMQContext();
 
+        $receiver = new ZMQSocket($context, ZMQ::SOCKET_PULL);
+        $receiver->connect("tcp://127.0.0.1:5557");
+
+        $subscriber = new ZMQSocket($context, ZMQ::SOCKET_SUB);
+        $subscriber->connect("tcp://127.0.0.1:5556");
+        $subscriber->setSockOpt(ZMQ::SOCKOPT_SUBSCRIBE, "10001");
+
+        while(true){
+            try {
+                for ($rc = 0; !$rc;){
+                    if ($rc = $receiver->recv(ZMQ::MODE_NOBLOCK)){
+                        // process task
+                    }
+                }
+            } catch( ZMQSocketException $e){
+                //do nothing
+            }
+
+            try {
+                for ($rc = 0; !$rc;){
+                    if ($rc = $receiver->recv(ZMQ::MODE_NOBLOCK)){
+                        // process task
+                    }
+                }
+            } catch( ZMQSocketException $e){
+                //do nothing
+            }
+
+            usleep(1);
+        }
     }
 
 }
