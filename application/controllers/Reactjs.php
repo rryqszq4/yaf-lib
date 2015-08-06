@@ -13,4 +13,6 @@ class ReactjsController extends Controller {
     public function indexAction(){
 
     }
+
+    public function bootstrapAction(){}
 }

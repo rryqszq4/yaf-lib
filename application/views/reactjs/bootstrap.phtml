@@ -1,0 +1,77 @@
+<script type="text/jsx">
+    var ButtonToolbar = ReactBootstrap.ButtonToolbar;
+    var Button = ReactBootstrap.Button;
+</script>
+[Buttons]
+[Options]
+<div id="button-options"></div>
+<script type="text/jsx">
+
+const buttonsInstanceA = (
+  <ButtonToolbar>
+    {/* Standard button */}
+    <Button>Default</Button>
+
+    {/* Provides extra visual weight and identifies the primary action in a set of buttons */}
+    <Button bsStyle='primary'>Primary</Button>
+
+    {/* Indicates a successful or positive action */}
+    <Button bsStyle='success'>Success</Button>
+
+    {/* Contextual button for informational alert messages */}
+    <Button bsStyle='info'>Info</Button>
+
+    {/* Indicates caution should be taken with this action */}
+    <Button bsStyle='warning'>Warning</Button>
+
+    {/* Indicates a dangerous or potentially negative action */}
+    <Button bsStyle='danger'>Danger</Button>
+
+    {/* Deemphasize a button by making it look like a link while maintaining button behavior */}
+    <Button bsStyle='link'>Link</Button>
+  </ButtonToolbar>
+);
+
+React.render(buttonsInstanceA, document.getElementById('button-options'));
+</script>
+
+[Sizes]
+<div id="button-sizes"></div>
+<script type="text/jsx">
+    const buttonsInstanceB = (
+        <div>
+        <ButtonToolbar>
+        <Button bsStyle='primary' bsSize='large'>Large button</Button>
+    <Button bsSize='large'>Large button</Button>
+    </ButtonToolbar>
+        <ButtonToolbar>
+    <Button bsStyle='primary'>Default button</Button>
+        <Button>Default button</Button>
+    </ButtonToolbar>
+        <ButtonToolbar>
+    <Button bsStyle='primary' bsSize='small'>Small button</Button>
+    <Button bsSize='small'>Small button</Button>
+    </ButtonToolbar>
+        <ButtonToolbar>
+    <Button bsStyle='primary' bsSize='xsmall'>Extra small button</Button>
+    <Button bsSize='xsmall'>Extra small button</Button>
+    </ButtonToolbar>
+    </div>
+    );
+
+    React.render(buttonsInstanceB, document.getElementById('button-sizes'));
+</script>
+
+<div id="button-block"></div>
+<script type="text/jsx">
+    const wellStyles = {maxWidth: 400, margin: '0 auto 10px'};
+
+    const buttonsInstance = (
+        <div className='well' style={wellStyles}>
+        <Button bsStyle='primary' bsSize='large' block>Block level button</Button>
+    <Button bsSize='large' block>Block level button</Button>
+    </div>
+    );
+
+    React.render(buttonsInstance, document.getElementById('button-block'));
+</script>
