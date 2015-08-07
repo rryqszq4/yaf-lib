@@ -1,0 +1,27 @@
+<div id="content" class="container"></div>
+<script type="text/jsx">
+var Input = ReactBootstrap.Input;
+const LoginInstance = React.createClass({
+    submit: function(){
+        alert(123);
+        return false;
+    },
+
+    render:function(){
+        return (
+            <form className="form-signin">
+            <h2 className="form-signin-heading">后台管理</h2>
+            <Input type='name' name='name' className="form-control"  placeholder='Enter name' />
+            <Input type='password' name="password" className="form-control" placeholder='Enter password' />
+            <div className="checkbox">
+
+            </div>
+            <button className="btn btn-lg btn-primary btn-block" type="submit" onClick={this.submit}>登 录</button>
+
+            </form>
+        );
+    }
+});
+
+React.render(<LoginInstance />, document.getElementById('content'));
+</script>
