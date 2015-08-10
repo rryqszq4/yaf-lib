@@ -1,1 +1,113 @@
-[module index.phtml]
+<nav id="nav" class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    </nav>
+<div class="container-fluid" id="container">
+</div>
+
+<script type="text/jsx">
+
+var TabbedArea = ReactBootstrap.TabbedArea;
+var TabPane = ReactBootstrap.TabPane;
+var Glyphicon = ReactBootstrap.Glyphicon;
+
+const NavInstance = React.createClass({
+
+    render:function(){
+        return (
+
+    <div className="container-fluid">
+        <div className="navbar-header">
+            <button type="button" className="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                <span className="sr-only">Toggle navigation</span>
+                <span className="icon-bar"></span>
+                <span className="icon-bar"></span>
+                <span className="icon-bar"></span>
+            </button>
+            <a className="navbar-brand" href="#">后台管理</a>
+        </div>
+        <div id="navbar" className="navbar-collapse collapse">
+            <ul className="nav navbar-nav navbar-right">
+                <li><a>admin</a></li>
+                <li><a href="/admin/logout">退出</a></li>
+            </ul>
+        </div>
+    </div>
+
+        );
+    }
+});
+
+var LeftContainer = React.createClass({
+  render: function() {
+    return (
+      <div className="col-sm-3 col-md-2 sidebar">
+          <ul className="nav nav-sidebar">
+            <li className="active"><a href="#"><Glyphicon glyph='user' />Overview <span className="sr-only">(current)</span></a></li>
+            <li><a href="#">Reports</a></li>
+            <li><a href="#">Analytics</a></li>
+            <li><a href="#">Export</a></li>
+          </ul>
+          <ul className="nav nav-sidebar">
+            <li className="active"><a><Glyphicon glyph='search' />Nav item</a></li>
+            <li><a href="">Nav item again</a></li>
+            <li><a href="">One more nav</a></li>
+            <li><a href="">Another nav item</a></li>
+            <li><a href="">More navigation</a></li>
+          </ul>
+          <ul className="nav nav-sidebar">
+            <li className="active"><a href=""><Glyphicon glyph='picture' />Nav item again</a></li>
+            <li><a href="">One more nav</a></li>
+            <li><a href="">Another nav item</a></li>
+          </ul>
+        </div>
+    );
+  }
+});
+
+const ControlledTabArea = React.createClass({
+  getInitialState() {
+    return {
+      key: 1
+    };
+  },
+
+  handleSelect(key) {
+    alert('selected ' + key);
+    this.setState({key});
+  },
+
+  render() {
+    return (
+      <TabbedArea activeKey={this.state.key} onSelect={this.handleSelect}>
+        <TabPane eventKey={1} tab='Tab 1'>TabPane 1 content</TabPane>
+        <TabPane eventKey={2} tab='Tab 2'>TabPane 2 content</TabPane>
+        <TabPane eventKey={3} tab='Tab 3' disabled>TabPane 3 content</TabPane>
+      </TabbedArea>
+    );
+  }
+});
+
+var RightContainer = React.createClass({
+  render: function() {
+    return (
+      <div className="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+        <ControlledTabArea />
+        </div>
+    );
+  }
+});
+
+const ContainerInstance = React.createClass({
+    render: function(){
+        return (
+        <div class="row">
+            <LeftContainer />
+            <RightContainer />
+        </div>
+        );
+    }
+});
+
+React.render(<NavInstance />, document.getElementById('nav'));
+
+React.render(<ContainerInstance />, document.getElementById('container'));
+</script>

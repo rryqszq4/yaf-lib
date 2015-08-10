@@ -7,7 +7,14 @@
  */
 class IndexController extends Controller {
 
+    public $_layout = 'admin_layout';
+
     public function IndexAction(){
-        echo "[module admin]";
+
+        return true;
+    }
+
+    public function LoginAction(){
+        return true;
     }
 }
