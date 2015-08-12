@@ -76,7 +76,11 @@ class Search_Config {
         $value = $this->_getValue($table);
         $title = '';
         foreach ($value[self::TITLE] as $k=>$v){
-            $title .= $data[$v].' ';
+            if (is_array($data)){
+                $title .= $data[$v].' ';
+            }else {
+                $title .= $data->$v.' ';
+            }
         }
         $title .= ' - '.$this->getTableName($table).
                   ' - '.$this->getApp().
@@ -91,7 +95,12 @@ class Search_Config {
         $detail = '';
 
         foreach ($value[self::DETAIL] as $k=>$v){
-            $detail .= $this->_plusquery($data[$v]," ");
+            if (is_array($data)){
+                $detail .= $this->_plusquery($data[$v]," ");
+            }else {
+                $detail .= $this->_plusquery($data->$v," ");
+            }
+
             /*if (is_string($data[$v])){
                 $detail .= $data[$v].' ';
             }
@@ -109,13 +118,23 @@ class Search_Config {
 
     public function formatUrl($table, $data){
         $value = $this->_getValue($table);
-        $url = str_replace('{*}',$data[$value[self::URL][1]],$value[self::URL][0]);
+        if (is_array($data)){
+            $tmp = $data[$value[self::URL][1]];
+        }else {
+            $tmp = $data->$value[self::URL][1];
+        }
+        $url = str_replace('{*}',$tmp,$value[self::URL][0]);
         return $url;
     }
 
     public function formatImage($table,$data){
         $value = $this->_getValue($table);
-        $image_url = str_replace('{*}',$data[$value[self::IMAGE_URL][1]],$value[self::IMAGE_URL][0]);
+        if (is_array($data)){
+            $tmp = $data[$value[self::IMAGE_URL][1]];
+        }else {
+            $tmp = $data->$value[self::IMAGE_URL][1];
+        }
+        $image_url = str_replace('{*}',$tmp,$value[self::IMAGE_URL][0]);
         return array($image_url,$value[self::IMAGE_URL][2]);
     }
 

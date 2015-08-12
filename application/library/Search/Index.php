@@ -19,7 +19,8 @@ class Search_Index {
 
     public function __construct($dbpath="gamedb"){
         try {
-            $this->database = new XapianWritableDatabase(APPLICATION_PATH."/data/".$dbpath,
+            $config = Yaf_Registry::get('config');
+            $this->database = new XapianWritableDatabase($config->search->db->dir.$dbpath,
             Xapian::DB_CREATE_OR_OPEN);
             $this->indexer = new XapianTermGenerator();
         } catch (Exception $e){

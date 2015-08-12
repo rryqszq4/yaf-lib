@@ -36,22 +36,14 @@ class SearchController extends Controller {
             $start_time = microtime(true);
             $this->_offset = $p-1 >= 0 ? ($p-1)*$this->_limit:0;
 
-            $client = new Jsonrpc_Client('http://cha.internal.zhaoquan.com/search/server');
+            $client = new Jsonrpc_Client('http://yaf-lib.com/search/server');
             $client->debug = true;
             $result = $client->execute('find',array($keyword_app,$this->_offset,$this->_limit));
 
             $keyword_cut = $result['keyword'];
 
             $count = $result['count'];
-            foreach ($result['list'] as $k=>$v){
-                $configer = new Search_Config($v['app']);
-                $data[$k] = array(
-                    'title' => $configer->formatTitle($v['table'],$v,$keyword_cut),
-                    'detail' => $configer->formatDetail($v['table'],$v,$keyword_cut),
-                    'url' => $configer->formatUrl($v['table'],$v),
-                    'image_url' => $configer->formatImage($v['table'],$v)
-                );
-            }
+            $data = $result['list'];
 
             $end_time = microtime(true);
             $timed =  round($end_time-$start_time ,4);
@@ -85,8 +77,18 @@ class SearchController extends Controller {
             $segmenter = new Search_Segment();
             $matcher = new Search_Match('gamedb');
 
-            $text = $segmenter->cutString($keywords);
-            $data = $matcher->call($text,$offset,$limit);
+            $text = $segmenter->cutString('lol');
+            $data = $matcher->call($text,0,12);
+
+            foreach ($data['list'] as $k=>$v){
+                $configer = new Search_Config($v->app);
+                $data['list'][$k] = array(
+                    'title' => $configer->formatTitle($v->table,$v,$text),
+                    'detail' => $configer->formatDetail($v->table,$v,$text),
+                    'url' => $configer->formatUrl($v->table,$v),
+                    'image_url' => $configer->formatImage($v->table,$v)
+                );
+            }
 
             $data['keyword'] = $text;
             return $data;
@@ -98,7 +100,7 @@ class SearchController extends Controller {
     public function clientAction(){
         $client = new Jsonrpc_Client('http://yaf-lib.com/search/server');
         $client->debug = true;
-        $result = $client->execute('find',array('卡牌'));
+        $result = $client->execute('find',array('lol'));
 
         DebugTools::print_r($result);
     }

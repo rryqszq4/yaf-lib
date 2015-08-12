@@ -18,7 +18,8 @@ class Search_Match {
 
     public function __construct($dbpath="gamedb"){
         try {
-            $this->database = new XapianDatabase(APPLICATION_PATH."/data/".$dbpath);
+            $config = Yaf_Registry::get('config');
+            $this->database = new XapianDatabase($config->search->db->dir.$dbpath);
             $this->parser = new XapianQueryParser();
             $this->enquire = new XapianEnquire($this->database);
         }catch (Exception $e){
