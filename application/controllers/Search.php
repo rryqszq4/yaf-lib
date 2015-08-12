@@ -96,7 +96,7 @@ class SearchController extends Controller {
     }
 
     public function clientAction(){
-        $client = new Jsonrpc_Client('http://cha.internal.zhaoquan.com/search/server');
+        $client = new Jsonrpc_Client('http://yaf-lib.com/search/server');
         $client->debug = true;
         $result = $client->execute('find',array('卡牌'));
 

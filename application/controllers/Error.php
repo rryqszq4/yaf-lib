@@ -12,7 +12,16 @@ class ErrorController extends Controller {
     public function errorAction($exception) {
         //1. assign to view engine
         //DebugTools::print_r($exception);
-        echo $exception->getMessage().PHP_EOL;
+        echo json_encode(array(
+            'state'=>1,
+            'code'=>null,
+            'msg'=>array(
+                'code'=>$exception->getCode(),
+                'file'=>$exception->getFile(),
+                'line'=>$exception->getLine(),
+                'message'=>$exception->getMessage()
+            )
+        ));
         return false;
         //$this->_view->assign("message", $exception->getMessage());
         //return true;

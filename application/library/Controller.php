@@ -7,11 +7,17 @@ class Controller extends Yaf_Controller_Abstract
 {
 
     public $_layout = 'layout';
+    public $enable_view = true;
 
     public function init(){
         if (!$this->getRequest()->isCli()){
-            $this->_regWidget();
-            $this->_setLayout();
+            if ($this->enable_view){
+                $this->_regWidget();
+                $this->_setLayout();
+            }else {
+                Yaf_Dispatcher::getInstance()->returnResponse(true);
+                Yaf_Dispatcher::getInstance()->disableView();
+            }
         }else {
             try {
                 throw new Yaf_Exception("Environment is not in WEB mode.\n");
