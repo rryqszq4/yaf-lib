@@ -88,39 +88,42 @@ System_Sort类封装了一些经典得排序算法
   * ::bubble    冒泡排序
   * ::merge     归并排序
 
-#### Search_Config
-Search_Config类 可以根据配置处理搜索结果
- * getApp
- * getAppName
- * getAppId
- * getTable
-
 #### Search_Segment
 Search_Segment类 中文分词
- * init
- * close
- * query
- * queryOne
- * cutQuery
- * cutString
+ * init         分词器初始化
+ * close        关闭
+ * query        获取原数据列表
+ * queryOne     获取单个原数据
+ * cutQuery     切分原数据
+ * cutString    切分字符串
 
 #### Search_Index
 Search_Index类 用于添加索引
   * setIdPrefix
-  * add
-  * alert
-  * delete
+  * add         建立索引数据
+  * alert       更新索引数据
+  * delete      删除索引数据
 
 #### Search_Match
 Search_Match类用于匹配搜索结果
-  * call
+  * call    执行匹配
 
 #### Search_Database
 Search_Database类 用于查询索引数据库中的原数据
-  * get_doccount
-  * get_data
-  * get_termlist
-  * select
+  * get_doccount    获取文档总数
+  * get_data        获取单个文档原数据
+  * get_termlist    获取单个文档语词
+  * select          获取数据列表
+
+#### Search_Config
+Search_Config类 可以根据配置处理搜索结果
+ * getApp       获取app
+ * getAppName   获取app名称
+ * getTableName 获取标名称
+ * formatTitle  格式化标题
+ * formatDetail 格式化详情
+ * formatUrl    格式化地址栏
+ * formatImage  格式化图片
 
 ##tools
 #### xhprof
