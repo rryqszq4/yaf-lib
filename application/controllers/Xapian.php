@@ -93,4 +93,41 @@ class XapianController extends Sontroller {
         return false;
     }
 
+    public function databaseAction(){
+        $database = new Search_Database();
+        DebugTools::print_r($database->get_doccount());
+        DebugTools::print_r($database->get_data(1));
+        DebugTools::print_r($database->get_termlist(1));
+        DebugTools::print_r($database->select());
+    }
+
+    public function testAction(){
+        //$config = Yaf_Registry::get('config');
+        $database = new XapianDatabase("/develop/cha.internal.zhaoquan.com/service/data/gamedb");
+        $indexer = new XapianTermGenerator();
+        $document = new XapianDocument();
+
+
+        var_dump($database->get_lastdocid());
+        var_dump($database->get_doccount());
+
+        $a = $document->get_docid();
+        var_dump($database->get_document(2)->termlist_count());
+
+        $i = $database->get_document(50000)->termlist_begin();
+        while (!$i->equals($database->get_document(50000)->termlist_end())){
+            var_dump($i->get_term());
+            $i->next();
+        }
+
+
+        var_dump($i);
+        /*$i = $database->termlist_begin(1);
+        while (!$i->equals($database->termlist_end(10))){
+            var_dump($i->get_description());
+            $i->next();
+        }*/
+
+    }
+
 }
