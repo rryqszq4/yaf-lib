@@ -89,9 +89,38 @@ System_Sort类封装了一些经典得排序算法
   * ::merge     归并排序
 
 #### Search_Config
+Search_Config类 可以根据配置处理搜索结果
+ * getApp
+ * getAppName
+ * getAppId
+ * getTable
+
 #### Search_Segment
+Search_Segment类 中文分词
+ * init
+ * close
+ * query
+ * queryOne
+ * cutQuery
+ * cutString
+
 #### Search_Index
+Search_Index类 用于添加索引
+  * setIdPrefix
+  * add
+  * alert
+  * delete
+
 #### Search_Match
+Search_Match类用于匹配搜索结果
+  * call
+
+#### Search_Database
+Search_Database类 用于查询索引数据库中的原数据
+  * get_doccount
+  * get_data
+  * get_termlist
+  * select
 
 ##tools
 #### xhprof
