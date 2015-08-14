@@ -48,9 +48,11 @@ class Search_Database {
 
     public function select($offset=1,$limit=10){
         $query = array();
-        for ($offset; $offset <= $limit; $offset++){
+        $limit = $offset+$limit;
+        for (; $offset < $limit; $offset++){
             $query[] = array(
-                'data' => $this->get_data($offset),
+                'did' => $offset,
+                'data' => json_decode($this->get_data($offset)),
                 'termlist' => $this->get_termlist($offset)
             );
         }
