@@ -64,20 +64,32 @@ class DebugTools {
     }
 
     static function encode_json($str) {
-        return urldecode(json_encode(url_encode($str)));
+        return urldecode(json_encode(self::url_encode($str)));
     }
 
     static function url_encode($str) {
         if(is_array($str)) {
             foreach($str as $key=>$value) {
                 if ($key != urlencode($key)){
-                    $str[urlencode($key)] = url_encode($value);
+                    $str[urlencode($key)] = self::url_encode($value);
                     unset($str[$key]);
                 }else {
-                    $str[$key] = url_encode($value);
+                    $str[$key] = self::url_encode($value);
                 }
             }
-        } else {
+        } else if (is_object($str)){
+            foreach($str as $key=>$value){
+                $tmp = '';
+                if ($key != urlencode($key)){
+                    $tmp = urlencode($key);
+                    $str->$tmp = self::url_encode($value);
+                    unset($str->$key);
+                }else {
+                    $str->$key = self::url_encode($value);
+                }
+            }
+
+        }else {
             $str = urlencode($str);
         }
 
