@@ -23,7 +23,8 @@ class SearchController extends Controller {
         $count = $database->get_doccount();
 
         $query = $database->select(($p-1)*$offset+1,$offset);
-        DebugTools::print_r($query);
+        $query = json_encode($query);
+        echo $query;
     }
 
 }

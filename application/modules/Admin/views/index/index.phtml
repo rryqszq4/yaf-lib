@@ -65,35 +65,58 @@ var LeftContainer = React.createClass({
 });
 
 const TesttableInstance = React.createClass({
+
+    getInitialState: function() {
+        return {
+            did : '1',
+            data: '2',
+            terlist: '3'
+        };
+    },
+
+    getData: function(){
+
+    },
+
+    componentDidMount: function() {
+        $.ajax({
+            url : '/admin/search/data',
+            data : {},
+            type : 'POST',
+            dataType: 'json',
+            success : function(result) {
+                  var lastGist = result[0];
+                  console.log(result);
+                  if (this.isMounted()) {
+                    this.setState({
+                      did: lastGist.did,
+                      data: lastGist.data,
+                      termlist: lastGist.termlist
+                    });
+                  }
+                }.bind(this)
+        });
+
+    },
+
+
     render: function(){
+
         return (
             <Table striped bordered condensed hover>
     <thead>
       <tr>
-        <th>#</th>
-        <th>First Name</th>
-        <th>Last Name</th>
-        <th>Username</th>
+        <th>did</th>
+        <th>data</th>
+        <th>termlist</th>
       </tr>
     </thead>
     <tbody>
       <tr>
-        <td>1</td>
-        <td>Mark</td>
-        <td>Otto</td>
-        <td>@mdo</td>
-      </tr>
-      <tr>
-        <td>2</td>
-        <td>Jacob</td>
-        <td>Thornton</td>
-        <td>@fat</td>
-      </tr>
-      <tr>
-        <td>3</td>
-        <td colSpan="2">Larry the Bird</td>
-        <td>@twitter</td>
-      </tr>
+                    <td>{this.state.did}</td>
+                    <td>{this.state.data}</td>
+                    <td>{this.state.termlist}</td>
+                </tr>
     </tbody>
   </Table>
         );
