@@ -68,9 +68,6 @@ const TesttableInstance = React.createClass({
 
     getInitialState: function() {
         return {
-            did : '1',
-            data: '2',
-            terlist: '3'
         };
     },
 
@@ -85,15 +82,13 @@ const TesttableInstance = React.createClass({
             type : 'POST',
             dataType: 'json',
             success : function(result) {
-                  var lastGist = result[0];
-                  console.log(result);
+
                   if (this.isMounted()) {
                     this.setState({
-                      did: lastGist.did,
-                      data: lastGist.data,
-                      termlist: lastGist.termlist
+                      data : result
                     });
                   }
+
                 }.bind(this)
         });
 
@@ -101,6 +96,20 @@ const TesttableInstance = React.createClass({
 
 
     render: function(){
+
+        if (this.state.data != undefined){
+            var dataNode = this.state.data.map(function(node){
+                return (
+                    <tr>
+                    <td>{node.did}</td>
+                    <td>{node.data}</td>
+                    <td>{node.termlist}</td>
+                </tr>
+                );
+            });
+        } else {
+            var dataNode = (<tr></tr>);
+        }
 
         return (
             <Table striped bordered condensed hover>
@@ -112,11 +121,7 @@ const TesttableInstance = React.createClass({
       </tr>
     </thead>
     <tbody>
-      <tr>
-                    <td>{this.state.did}</td>
-                    <td>{this.state.data}</td>
-                    <td>{this.state.termlist}</td>
-                </tr>
+      {dataNode}
     </tbody>
   </Table>
         );
