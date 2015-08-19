@@ -10,7 +10,12 @@ rpc服务化，支持hprose、yar等，
 ##requirement
 
 - php 5.3+
+
 - php-yaf 2.3.3
+- phpredis 2.2.7
+- memcache 2.2.7
+- xapian-bindings 1.2.21
+- scws 1.2.2
 - swoole 1.7.17
 - hprose-php 1.5.4
 - php-yar 1.2.4
@@ -67,6 +72,9 @@ System_Memcache类封装了Memcached的客户端接口
   * ::flush 清空
   * ::increment 原子计数加
   * ::decrement 原子计数减
+
+#### System_Redis
+System_Redis类封装redis客户端驱动
 
 #### System_Mysqlpdo
 System_Mysqlpdo类封装了pdo_mysql的操作接口
