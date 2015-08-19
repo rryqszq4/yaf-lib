@@ -342,4 +342,41 @@ class ZmqController extends Sontroller
         }
     }
 
+    public function multi_thread_serverAction(){
+        function worker_routine(){
+            $context = new ZMQContext();
+            $receiver = new ZMQSocket($context, ZMQ::SOCKET_REP);
+            $receiver->connect("ipc://workers.ipc");
+
+            while (true){
+                $string = $receiver->recv();
+                printf("Received request: [%s]%s", $string, PHP_EOL);
+
+                sleep(1);
+
+                $receiver->send("World");
+            }
+        }
+
+        for ($thread_nbr = 0; $thread_nbr != 5; $thread_nbr++){
+            $pid = pcntl_fork();
+
+            if ($pid == 0){
+                worker_routine();
+                exit();
+            }
+        }
+
+        $context = new ZMQContext();
+
+        $clients = new ZMQSocket($context, ZMQ::SOCKET_ROUTER);
+        $clients->bind("tcp://127.0.0.1:5555");
+
+        $workers = new ZMQSocket($context, ZMQ::SOCKET_DEALER);
+        $workers->bind("ipc://workers.ipc");
+
+        $device = new ZMQDevice($clients, $workers);
+        $device->run();
+    }
+
 }
