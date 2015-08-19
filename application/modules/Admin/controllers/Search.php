@@ -16,7 +16,7 @@ class SearchController extends Controller {
     }
 
     public function DataAction(){
-        $p = isset($_GET['p']) ? intval($_GET['p']) : 1;
+        $p = isset($_REQUEST['p']) ? intval($_REQUEST['p']) : 1;
         $database = new Search_Database();
 
         $offset = 15;

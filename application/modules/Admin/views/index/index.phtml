@@ -9,6 +9,7 @@ var TabbedArea = ReactBootstrap.TabbedArea;
 var TabPane = ReactBootstrap.TabPane;
 var Glyphicon = ReactBootstrap.Glyphicon;
 var Table = ReactBootstrap.Table;
+var Pagination = ReactBootstrap.Pagination;
 
 const NavInstance = React.createClass({
 
@@ -68,17 +69,14 @@ const TesttableInstance = React.createClass({
 
     getInitialState: function() {
         return {
+            activePage : 1
         };
     },
 
-    getData: function(){
-
-    },
-
-    componentDidMount: function() {
+    getData: function(page){
         $.ajax({
             url : '/admin/search/data',
-            data : {},
+            data : {p:page},
             type : 'POST',
             dataType: 'json',
             success : function(result) {
@@ -91,12 +89,22 @@ const TesttableInstance = React.createClass({
 
                 }.bind(this)
         });
+    },
 
+    pageSelect(event, selectedEvent) {
+        this.setState({
+          activePage: selectedEvent.eventKey
+        });
+
+        this.getData(selectedEvent.eventKey);
+    },
+
+    componentWillMount: function() {
+        this.getData(1);
     },
 
 
     render: function(){
-
         if (this.state.data != undefined){
             var dataNode = this.state.data.map(function(node){
                 return (
@@ -112,20 +120,64 @@ const TesttableInstance = React.createClass({
         }
 
         return (
+            <div>
+            <Pagination
+                prev
+                next
+                first
+                last
+                ellipsis
+                items={20}
+                maxButtons={5}
+                activePage={this.state.activePage}
+                onSelect={this.pageSelect}
+            />
             <Table striped bordered condensed hover>
-    <thead>
-      <tr>
-        <th>did</th>
-        <th>data</th>
-        <th>termlist</th>
-      </tr>
-    </thead>
-    <tbody>
-      {dataNode}
-    </tbody>
-  </Table>
+                <thead>
+                  <tr>
+                    <th>did</th>
+                    <th>data</th>
+                    <th>termlist</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {dataNode}
+                </tbody>
+              </Table>
+              </div>
         );
     }
+});
+
+const PaginationAdvanced = React.createClass({
+  getInitialState() {
+    return {
+      activePage: 1
+    };
+  },
+
+  handleSelect(event, selectedEvent) {
+    this.setState({
+      activePage: selectedEvent.eventKey
+    });
+    alert(selectedEvent.eventKey);
+    //React.render(<TesttableInstance />, document.getElementById('table'));
+  },
+
+  render() {
+    return (
+      <Pagination
+        prev
+        next
+        first
+        last
+        ellipsis
+        items={20}
+        maxButtons={5}
+        activePage={this.state.activePage}
+        onSelect={this.handleSelect} />
+    );
+  }
 });
 
 const ControlledTabArea = React.createClass({
@@ -144,8 +196,10 @@ const ControlledTabArea = React.createClass({
     return (
       <TabbedArea activeKey={this.state.key} onSelect={this.handleSelect}>
         <TabPane eventKey={1} tab='Tab 123'>
-        <h1>table</h1>
+            <h1>table</h1>
+            <div id="table">
                 <TesttableInstance />
+            </div>
 
         </TabPane>
         <TabPane eventKey={2} tab='Tab 2'>TabPane 2 content</TabPane>
