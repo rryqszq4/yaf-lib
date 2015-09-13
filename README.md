@@ -134,6 +134,9 @@ Search_Config类 可以根据配置处理搜索结果
  * formatImage  格式化图片
 
 ##tools
+#### xapian
+- xapian-bindings 1.2.21
+
 #### xhprof
 - xhprof-0.9.4
 
