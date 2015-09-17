@@ -10,10 +10,10 @@ rpc服务化，支持hprose、yar等，
 ##requirement
 
 - php 5.3+
-
 - php-yaf 2.3.3
 - phpredis 2.2.7
 - memcache 2.2.7
+- zmq 1.1.2
 - xapian-bindings 1.2.21
 - scws 1.2.2
 - swoole 1.7.17
