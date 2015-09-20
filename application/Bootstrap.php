@@ -17,8 +17,10 @@ class Bootstrap extends Yaf_Bootstrap_Abstract{
 
 	public function _initRoute(Yaf_Dispatcher $dispatcher){
 	    $router = Yaf_Dispatcher::getInstance()->getRouter();
+
         //$router->addConfig($this->_config->routes);
-        $matches = array();
+        //DebugTools::print_r($dispatcher);
+        /*$matches = array();
         if (preg_match('/^\/([A-Za-z0-9_\-\.]+)[\/]?([A-Za-z0-9_\-\.]*)[\/]?([A-Za-z0-9_\-\.]*).*$/',$_SERVER['REQUEST_URI'],$matches)){
             #DebugTools::print_r($matches);
         }
@@ -28,7 +30,7 @@ class Bootstrap extends Yaf_Bootstrap_Abstract{
             )
         );
         $router->addRoute('xyq', $route);
-
+        */
         //DebugTools::print_r($router);
 	}
 
