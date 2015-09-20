@@ -6,7 +6,7 @@
  * Time: 下午5:16
  */
 
-require_once('../application/tools/hprose-php/Hprose.php');
+require_once('../src/tools/hprose-php/Hprose.php');
 function hello($name) {
     echo "Hello $name!";
     return "Hello $name!";

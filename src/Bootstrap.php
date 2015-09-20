@@ -35,7 +35,7 @@ class Bootstrap extends Yaf_Bootstrap_Abstract{
 	}
 
     public function _initLayout(Yaf_Dispatcher $dispatcher){
-        $layout = new LayoutPlugin('layout.phtml',APPLICATION_PATH.'/application/views/');
+        $layout = new LayoutPlugin('layout.phtml', $this->_config->application->directory.'/views/');
 
         Yaf_Registry::set('layout',$layout);
 

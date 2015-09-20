@@ -8,11 +8,11 @@ define("APPLICATION_PATH", dirname(dirname(__FILE__)));
 define("DEBUG_TOOLS",true);
 
 if (DEBUG_TOOLS){
-    require_once(APPLICATION_PATH.'/application/library/DebugTools.php');
+    require_once(APPLICATION_PATH.'/src/library/DebugTools.php');
     #DebugTools::startTimeMemory();
 }
 
-require_once(APPLICATION_PATH."/application/tools/hprose-php/Hprose.php");
+require_once(APPLICATION_PATH."/src/tools/hprose-php/Hprose.php");
 
 $app = new Yaf_Application(APPLICATION_PATH."/conf/application.ini");
 $app->bootstrap()->run();
