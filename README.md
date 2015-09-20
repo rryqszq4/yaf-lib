@@ -133,6 +133,9 @@ Search_Config类 可以根据配置处理搜索结果
  * formatUrl    格式化地址栏
  * formatImage  格式化图片
 
+##bin
+#### main.php
+
 ##tools
 #### xapian
 - xapian-bindings 1.2.21
