@@ -3,10 +3,10 @@ class Bootstrap extends Yaf_Bootstrap_Abstract{
 
     private $_config;
 
-	public function _initConfig(){
-		$this->_config = Yaf_Application::app()->getConfig();
-		Yaf_Registry::set('config', $this->_config);
-	}
+    public function _initConfig(Yaf_Dispatcher $dispatcher){
+        $this->_config = Yaf_Application::app()->getConfig();
+        Yaf_Registry::set('config', $this->_config);
+    }
 
     public function _initLoader(Yaf_Dispatcher $dispatcher) {
 
@@ -15,8 +15,8 @@ class Bootstrap extends Yaf_Bootstrap_Abstract{
         Yaf_Loader::import($this->_config->application->directory."/tools/xapian/xapian.php");
     }
 
-	public function _initRoute(Yaf_Dispatcher $dispatcher){
-	    $router = Yaf_Dispatcher::getInstance()->getRouter();
+    public function _initRoute(Yaf_Dispatcher $dispatcher){
+        $router = Yaf_Dispatcher::getInstance()->getRouter();
 
         //$router->addConfig($this->_config->routes);
         //DebugTools::print_r($dispatcher);
@@ -32,7 +32,7 @@ class Bootstrap extends Yaf_Bootstrap_Abstract{
         $router->addRoute('xyq', $route);
         */
         //DebugTools::print_r($router);
-	}
+    }
 
     public function _initLayout(Yaf_Dispatcher $dispatcher){
         $layout = new LayoutPlugin('layout.phtml', $this->_config->application->directory.'/views/');
@@ -42,8 +42,7 @@ class Bootstrap extends Yaf_Bootstrap_Abstract{
         $dispatcher->registerPlugin($layout);
     }
 
-	public function _initView(Yaf_Dispatcher $dispatcher){
-	
-	}
+    public function _initView(Yaf_Dispatcher $dispatcher){
+
+    }
 }
-?>
