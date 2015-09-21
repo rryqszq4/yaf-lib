@@ -14,6 +14,4 @@ if (isset($opt['c']) && isset($opt['a'])){
     $request->setRequestUri($opt['c']."/".$opt['a']);
 }*/
 #$request->setRequestUri("swoole/server");
-$app
-    ->bootstrap()
-    ->run();
+$app->bootstrap()->run();

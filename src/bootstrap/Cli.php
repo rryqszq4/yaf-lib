@@ -3,6 +3,12 @@
 class Bootstrap extends Yaf_Bootstrap_Abstract{
 
     private $_config;
+    private $_option;
+
+    public function _initOption(Yaf_Dispatcher $dispatcher){
+        $option = new Core_Option();
+        $this->_option = $option->run();
+    }
 
     public function _initConfig(Yaf_Dispatcher $dispatcher){
         $this->_config = Yaf_Application::app()->getConfig();
@@ -10,8 +16,8 @@ class Bootstrap extends Yaf_Bootstrap_Abstract{
     }
 
     public function _initRequest(Yaf_Dispatcher $dispatcher){
-        $dispatcher->getRequest()->setRequestUri("swoole/server");
-        var_dump($dispatcher->getRequest());
+        if (!empty($this->_option) && !empty($this->_option['c']) && !empty($this->_option['a']))
+            $dispatcher->getRequest()->setRequestUri($this->_option['c']."/".$this->_option['a']);
     }
 
     public function _initLoader(Yaf_Dispatcher $dispatcher) {
