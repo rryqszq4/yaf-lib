@@ -33,4 +33,14 @@ class MadclientController extends Controller{
         return false;
     }
 
+    public function kvmsgAction(){
+        $kvmsg = new Zmq_Kvmsg();
+        $a = $kvmsg->set_sequence(45678);
+        var_dump($a);
+        echo "<br>";
+        var_dump($kvmsg->sequence());
+
+        return false;
+    }
+
 }

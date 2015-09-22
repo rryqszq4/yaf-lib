@@ -91,6 +91,14 @@ class Zmq_Kvmsg
         }else {
             $sequence = 0;
             $source = $this->_msg[self::FRAME_SEQ];
+            $sequence = $source[0] << 56;
+            $sequence += $source[1] << 48;
+            $sequence += $source[2] << 40;
+            $sequence += $source[3] << 32;
+            $sequence += $source[4] << 24;
+            $sequence += $source[5] << 16;
+            $sequence += $source[6] << 8;
+            $sequence += $source[7];
         }
         return $sequence;
     }
@@ -100,15 +108,15 @@ class Zmq_Kvmsg
         if ($this->_get_present(self::FRAME_SEQ))
             $this->_msg[self::FRAME_SEQ] = "";
 
-        $source = "";
-        $source[] = ord(($sequence >> 56) & 255);
-        $source[]= ord(($sequence >> 48) & 255);
-        $source[]= ord(($sequence >> 40) & 255);
-        $source[]= ord(($sequence >> 32) & 255);
-        $source[]= ord(($sequence >> 24) & 255);
-        $source[]= ord(($sequence >> 16) & 255);
-        $source[]= ord(($sequence >> 8) & 255);
-        $source[]= ord(($sequence) & 255);
+        $source = array();
+        $source[0] = (($sequence >> 56) & 255);
+        $source[1]= (($sequence >> 48) & 255);
+        $source[2]= (($sequence >> 40) & 255);
+        $source[3]= (($sequence >> 32) & 255);
+        $source[4]= (($sequence >> 24) & 255);
+        $source[5]= (($sequence >> 16) & 255);
+        $source[6]= (($sequence >> 8) & 255);
+        $source[7]= (($sequence) & 255);
 
         $this->_msg[self::FRAME_SEQ] = $source;
         $this->_set_present(self::FRAME_SEQ, 1);
