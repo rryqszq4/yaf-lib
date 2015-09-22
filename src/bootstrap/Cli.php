@@ -16,8 +16,9 @@ class Bootstrap extends Yaf_Bootstrap_Abstract{
     }
 
     public function _initRequest(Yaf_Dispatcher $dispatcher){
-        if (!empty($this->_option) && !empty($this->_option['c']) && !empty($this->_option['a']))
-            $dispatcher->getRequest()->setRequestUri($this->_option['c']."/".$this->_option['a']);
+        #if (!empty($this->_option) && !empty($this->_option['c']) && !empty($this->_option['a']))
+        #    $dispatcher->getRequest()->setRequestUri($this->_option['c']."/".$this->_option['a']);
+        $dispatcher->getRequest()->setRequestUri(basename(APPLICATION_INDEX,".php")."/main");
     }
 
     public function _initLoader(Yaf_Dispatcher $dispatcher) {
@@ -25,6 +26,7 @@ class Bootstrap extends Yaf_Bootstrap_Abstract{
         Yaf_Loader::getInstance()->registerLocalNameSpace(array("System"));
         Yaf_Loader::getInstance()->import($this->_config->application->directory.'/widgets/Index.php');
         Yaf_Loader::import($this->_config->application->directory."/tools/xapian/xapian.php");
+
     }
 
     public function _initRoute(Yaf_Dispatcher $dispatcher){
