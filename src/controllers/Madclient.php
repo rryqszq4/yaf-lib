@@ -1,0 +1,33 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: zhaoquan
+ * Date: 15-9-22
+ * Time: 下午3:53
+ */
+
+class MadclientController extends Controller{
+
+    public $_layout = null;
+
+    public function indexAction(){
+
+        $context = new ZMQContext();
+        $socket = new ZMQSocket($context, ZMQ::SOCKET_DEALER);
+        $socket->connect("tcp://127.0.0.1:5555");
+
+        $zmsg = new Zmq_Msg($socket);
+        $zmsg->body_set("Hello world");
+        $zmsg->push("echo");
+        $zmsg->push("MDPC01");
+        $zmsg->push("");
+
+        printf ("I: send request to 'echo' service: %s", PHP_EOL);
+        echo $zmsg->__toString();
+
+        $zmsg->send();
+
+        return false;
+    }
+
+}
