@@ -26,6 +26,9 @@ rpc服务化，支持hprose、yar等，
 http://localhost/madclient
 Madclient是php实现的MadzMQ消息队列的客户端，通过msg协议与madbroker通信，异步发送消息。
 
+##src/bootstrap
+bootstrap是yaf的引导程序，这里进行拆分，如果工作的web进入cgi模式，如果工作在命令行进入cli模式。
+
 ##src/library
 
 #### Controller
@@ -147,10 +150,17 @@ Search_Config类 可以根据配置处理搜索结果
 
 ##bin
 #### main
-服务端程序，根据入口文件名称找到MainController,然后执行mainAction方法
+服务端程序，根据入口文件名称找到MainController,然后执行mainAction方法;
+yaf的CLI模式的入口文件，在CLI模式下可以开发强大的服务端程序
+```sh
+./bin/main
+```
 
 #### madserver
 madserver是php实现的MadzMQ消息队列的服务端，其作为订阅者订阅来自madbroker的，协议为kvmsg.
+```sh
+./bin/madserver
+```
 
 ####hprose_swoole_tcp.php
 rpc服务，tcp协议，支持方法、对象方法、异步等调用
@@ -162,7 +172,7 @@ $server->add(new TestModel(),'','test');
 $client->test->one();
 ```
 
-##tools
+##src/tools
 #### xapian
 - xapian-bindings 1.2.21
 
@@ -171,13 +181,6 @@ $client->test->one();
 
 #### hprose-php
 - hprose-php 1.5.4
-
-##server
-####index.php
-yaf的CLI模式的入口文件，在CLI模式下可以开发强大的服务端程序，支持swoole和hprose
-~~~sh
-php index.php request_uri="/hprose/swooletcpserver"
-~~~
 
 
 
