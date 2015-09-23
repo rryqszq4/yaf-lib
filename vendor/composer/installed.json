@@ -1,0 +1,270 @@
+[
+    {
+        "name": "evenement/evenement",
+        "version": "v1.0.0",
+        "version_normalized": "1.0.0.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/igorw/evenement.git",
+            "reference": "fa966683e7df3e5dd5929d984a44abfbd6bafe8d"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/igorw/evenement/zipball/fa966683e7df3e5dd5929d984a44abfbd6bafe8d",
+            "reference": "fa966683e7df3e5dd5929d984a44abfbd6bafe8d",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.3.0"
+        },
+        "time": "2012-05-30 15:01:08",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-0": {
+                "Evenement": "src"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Igor Wiedler",
+                "email": "igor@wiedler.ch",
+                "homepage": "http://wiedler.ch/igor/"
+            }
+        ],
+        "description": "Événement is a very simple event dispatching library for PHP 5.3",
+        "keywords": [
+            "event-dispatcher"
+        ]
+    },
+    {
+        "name": "react/stream",
+        "version": "v0.3.4",
+        "version_normalized": "0.3.4.0",
+        "target-dir": "React/Stream",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/reactphp/stream.git",
+            "reference": "feef56628afe3fa861f0da5f92c909e029efceac"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/reactphp/stream/zipball/feef56628afe3fa861f0da5f92c909e029efceac",
+            "reference": "feef56628afe3fa861f0da5f92c909e029efceac",
+            "shasum": ""
+        },
+        "require": {
+            "evenement/evenement": "1.0.*",
+            "php": ">=5.3.3"
+        },
+        "suggest": {
+            "react/event-loop": "0.3.*",
+            "react/promise": "~1.0"
+        },
+        "time": "2014-02-16 19:48:52",
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "0.3-dev"
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "psr-0": {
+                "React\\Stream": ""
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "description": "Basic readable and writable stream interfaces that support piping.",
+        "keywords": [
+            "pipe",
+            "stream"
+        ]
+    },
+    {
+        "name": "react/event-loop",
+        "version": "v0.3.4",
+        "version_normalized": "0.3.4.0",
+        "target-dir": "React/EventLoop",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/reactphp/event-loop.git",
+            "reference": "235cddfa999a392e7d63dc9bef2e042492608d9f"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/reactphp/event-loop/zipball/235cddfa999a392e7d63dc9bef2e042492608d9f",
+            "reference": "235cddfa999a392e7d63dc9bef2e042492608d9f",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.3.3"
+        },
+        "suggest": {
+            "ext-libev": "*",
+            "ext-libevent": ">=0.0.5"
+        },
+        "time": "2013-07-21 02:23:09",
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "0.3-dev"
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "psr-0": {
+                "React\\EventLoop": ""
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "description": "Event loop abstraction layer that libraries can use for evented I/O.",
+        "keywords": [
+            "event-loop"
+        ]
+    },
+    {
+        "name": "react/socket",
+        "version": "v0.3.4",
+        "version_normalized": "0.3.4.0",
+        "target-dir": "React/Socket",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/reactphp/socket.git",
+            "reference": "19bc0c4309243717396022ffb2e59be1cc784327"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/reactphp/socket/zipball/19bc0c4309243717396022ffb2e59be1cc784327",
+            "reference": "19bc0c4309243717396022ffb2e59be1cc784327",
+            "shasum": ""
+        },
+        "require": {
+            "evenement/evenement": "1.0.*",
+            "php": ">=5.3.3",
+            "react/event-loop": "0.3.*",
+            "react/stream": "0.3.*"
+        },
+        "time": "2014-02-17 22:32:00",
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "0.3-dev"
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "psr-0": {
+                "React\\Socket": ""
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "description": "Library for building an evented socket server.",
+        "keywords": [
+            "Socket"
+        ]
+    },
+    {
+        "name": "guzzle/parser",
+        "version": "v3.0.7",
+        "version_normalized": "3.0.7.0",
+        "target-dir": "Guzzle/Parser",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/Guzzle3/parser.git",
+            "reference": "8a1f6829d75274de16232cb327597db3067a2074"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/Guzzle3/parser/zipball/8a1f6829d75274de16232cb327597db3067a2074",
+            "reference": "8a1f6829d75274de16232cb327597db3067a2074",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.3.2"
+        },
+        "time": "2012-12-07 16:45:11",
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "3.0-dev"
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "psr-0": {
+                "Guzzle\\Parser": ""
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "description": "Interchangeable parsers used by Guzzle",
+        "homepage": "http://guzzlephp.org/",
+        "keywords": [
+            "URI Template",
+            "cookie",
+            "http",
+            "message",
+            "url"
+        ],
+        "abandoned": "guzzle/guzzle"
+    },
+    {
+        "name": "react/http",
+        "version": "v0.3.0",
+        "version_normalized": "0.3.0.0",
+        "target-dir": "React/Http",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/reactphp/http.git",
+            "reference": "9e131ab600a636bbe93d3553761ad4f29ebcbc9b"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/reactphp/http/zipball/9e131ab600a636bbe93d3553761ad4f29ebcbc9b",
+            "reference": "9e131ab600a636bbe93d3553761ad4f29ebcbc9b",
+            "shasum": ""
+        },
+        "require": {
+            "guzzle/parser": "3.0.*",
+            "php": ">=5.3.3",
+            "react/socket": "0.3.*"
+        },
+        "time": "2013-02-24 19:01:50",
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "0.3-dev"
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "psr-0": {
+                "React\\Http": ""
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "description": "Library for building an evented http server.",
+        "keywords": [
+            "http"
+        ]
+    }
+]
