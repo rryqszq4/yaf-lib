@@ -21,7 +21,12 @@ rpc服务化，支持hprose、yar等，
 - php-yar 1.2.4
 - xhprof 0.9.4
 
-##library
+##src/controllers
+#### Madclient
+http://localhost/madclient
+Madclient是php实现的MadzMQ消息队列的客户端，通过msg协议与madbroker通信，异步发送消息。
+
+##src/library
 
 #### Controller
 Controller类继承Yaf_Controller_Abstract，控制器可以选择性的继承这个类，在类中实现了，layout、widget等初始化。
@@ -46,6 +51,13 @@ $widget('IndexWidget',
     )
 );
 ```
+
+#### Zmq_Msg
+Zmq_Msg是基于ZeroMQ的一种简单msg消息协议的php实现
+
+### Zmq_Kvmsg
+Zmq_Kvmsg是基于ZeroMQ的一种简单key-value消息协议的php实现
+
 #### Core_Processpool
 Core_Processpool类封装了一个进程池。
 
@@ -134,7 +146,11 @@ Search_Config类 可以根据配置处理搜索结果
  * formatImage  格式化图片
 
 ##bin
-#### main.php
+#### main
+服务端程序，根据入口文件名称找到MainController,然后执行mainAction方法
+
+#### madserver
+madserver是php实现的MadzMQ消息队列的服务端，其作为订阅者订阅来自madbroker的，协议为kvmsg.
 
 ####hprose_swoole_tcp.php
 rpc服务，tcp协议，支持方法、对象方法、异步等调用
