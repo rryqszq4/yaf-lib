@@ -31,13 +31,17 @@ class Zmq_Kvmsg
         $this->_present[$frame] = $bool;
     }
 
-    public function __construct()
+    public function __construct($sequence)
     {
         $this->_set_present(self::FRAME_KEY, 0);
         $this->_set_present(self::FRAME_SEQ, 0);
         $this->_set_present(self::FRAME_UUID, 0);
         $this->_set_present(self::FRAME_PROPS, 0);
         $this->_set_present(self::FRAME_BODY, 0);
+
+        #$this->set_sequence($sequence);
+
+        //return $this;
     }
 
     public function key()
@@ -91,14 +95,14 @@ class Zmq_Kvmsg
         }else {
             $sequence = 0;
             $source = $this->_msg[self::FRAME_SEQ];
-            $sequence = $source[0] << 56;
-            $sequence += $source[1] << 48;
-            $sequence += $source[2] << 40;
-            $sequence += $source[3] << 32;
-            $sequence += $source[4] << 24;
-            $sequence += $source[5] << 16;
-            $sequence += $source[6] << 8;
-            $sequence += $source[7];
+            $sequence = ord($source[0]) << 56;
+            $sequence += ord($source[1]) << 48;
+            $sequence += ord($source[2]) << 40;
+            $sequence += ord($source[3]) << 32;
+            $sequence += ord($source[4]) << 24;
+            $sequence += ord($source[5]) << 16;
+            $sequence += ord($source[6]) << 8;
+            $sequence += ord($source[7]);
         }
         return $sequence;
     }
@@ -108,20 +112,79 @@ class Zmq_Kvmsg
         if ($this->_get_present(self::FRAME_SEQ))
             $this->_msg[self::FRAME_SEQ] = "";
 
-        $source = array();
-        $source[0] = (($sequence >> 56) & 255);
-        $source[1]= (($sequence >> 48) & 255);
-        $source[2]= (($sequence >> 40) & 255);
-        $source[3]= (($sequence >> 32) & 255);
-        $source[4]= (($sequence >> 24) & 255);
-        $source[5]= (($sequence >> 16) & 255);
-        $source[6]= (($sequence >> 8) & 255);
-        $source[7]= (($sequence) & 255);
+        $source = '00000000';
+        $source[0] = chr(($sequence >> 56) & 255);
+        $source[1]= chr(($sequence >> 48) & 255);
+        $source[2]= chr(($sequence >> 40) & 255);
+        $source[3]= chr(($sequence >> 32) & 255);
+        $source[4]= chr(($sequence >> 24) & 255);
+        $source[5]= chr(($sequence >> 16) & 255);
+        $source[6]= chr(($sequence >> 8) & 255);
+        $source[7]= chr(($sequence) & 255);
 
         $this->_msg[self::FRAME_SEQ] = $source;
         $this->_set_present(self::FRAME_SEQ, 1);
 
         return $this->_msg;
+    }
+
+    public function size()
+    {
+        if ($this->_get_present(self::FRAME_BODY))
+            return strlen($this->body());
+        else
+            return 0;
+    }
+
+    public function send($socket)
+    {
+        $res = $socket->sendmulti($this->_msg, ZMQ::MODE_SNDMORE);
+        return $res;
+    }
+
+    public function recv($socket)
+    {
+        $res = $socket->recvmulti(ZMQ::MODE_SNDMORE);
+        $this->set_key($res[1]);
+        $this->set_body($res[2]);
+        var_dump($res[0]);
+        var_dump(bin2hex($res[0]));
+        return $this;
+    }
+
+    public function dump()
+    {
+        $res = array();
+        $res['key'] = $this->key();
+        #$res['seq'] = $this->sequence();
+        $res['uuid'] = null;
+        $res['props'] = null;
+        $res['body'] = $this->body();
+        $res['size'] = $this->size();
+
+        var_dump($res);
+    }
+
+    public static function test()
+    {
+        $context = new ZMQContext();
+        $output = new ZMQSocket($context, ZMQ::SOCKET_DEALER);
+        $output->setSockOpt(ZMQ::SOCKOPT_IDENTITY,"identity");
+        $output->bind("inproc://kvmsg_selftest");
+        $input = new ZMQSocket($context, ZMQ::SOCKET_ROUTER);
+        $input->connect("inproc://kvmsg_selftest");
+
+        $kvmsg = new self(1);
+        $kvmsg->set_key('key');
+        $kvmsg->set_body('body');
+        $kvmsg->dump();
+
+        $kvmsg->send($output);
+
+        $kvmsg_2 = new self(2);
+        $kvmsg_2->recv($input);
+        $kvmsg_2->dump();
+
     }
 
 }
