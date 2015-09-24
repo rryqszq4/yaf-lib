@@ -39,7 +39,7 @@ class Zmq_Kvmsg
         $this->_set_present(self::FRAME_PROPS, 0);
         $this->_set_present(self::FRAME_BODY, 0);
 
-        #$this->set_sequence($sequence);
+        $this->set_sequence($sequence);
 
         //return $this;
     }
@@ -147,8 +147,8 @@ class Zmq_Kvmsg
         $res = $socket->recvmulti(ZMQ::MODE_SNDMORE);
         $this->set_key($res[1]);
         $this->set_body($res[2]);
-        var_dump($res[0]);
-        var_dump(bin2hex($res[0]));
+        //var_dump($res[0]);
+        //var_dump(bin2hex($res[0]));
         return $this;
     }
 
