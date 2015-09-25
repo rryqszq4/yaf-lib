@@ -107,6 +107,14 @@ class Zmq_Kvmsg
         return $sequence;
     }
 
+    public function set_byte_sequence($byte)
+    {
+        $this->_msg[self::FRAME_SEQ] = $byte;
+        $this->_set_present(self::FRAME_SEQ, 1);
+
+        return $this->_msg;
+    }
+
     public function set_sequence($sequence)
     {
         if ($this->_get_present(self::FRAME_SEQ))
@@ -145,10 +153,9 @@ class Zmq_Kvmsg
     public function recv($socket)
     {
         $res = $socket->recvmulti(ZMQ::MODE_SNDMORE);
-        $this->set_key($res[1]);
-        $this->set_body($res[2]);
-        //var_dump($res[0]);
-        //var_dump(bin2hex($res[0]));
+        $this->set_key($res[self::FRAME_KEY]);
+        $this->set_byte_sequence($res[self::FRAME_SEQ]);
+        $this->set_body($res[self::FRAME_BODY]);
         return $this;
     }
 
@@ -156,7 +163,7 @@ class Zmq_Kvmsg
     {
         $res = array();
         $res['key'] = $this->key();
-        #$res['seq'] = $this->sequence();
+        $res['seq'] = $this->sequence();
         $res['uuid'] = null;
         $res['props'] = null;
         $res['body'] = $this->body();
@@ -169,7 +176,7 @@ class Zmq_Kvmsg
     {
         $context = new ZMQContext();
         $output = new ZMQSocket($context, ZMQ::SOCKET_DEALER);
-        $output->setSockOpt(ZMQ::SOCKOPT_IDENTITY,"identity");
+        //$output->setSockOpt(ZMQ::SOCKOPT_IDENTITY,"identity");
         $output->bind("inproc://kvmsg_selftest");
         $input = new ZMQSocket($context, ZMQ::SOCKET_ROUTER);
         $input->connect("inproc://kvmsg_selftest");

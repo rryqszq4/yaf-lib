@@ -21,11 +21,15 @@ class MadserverController extends Sontroller {
         $snapshot = new ZMQSocket($context, ZMQ::SOCKET_DEALER);
         $snapshot->connect("tcp://127.0.0.1:5556");
 
-        $sequence = 0;
+        $sequence = 1;
         $snapshot->sendmulti(array("ICANHAZ?",self::SUBTREE), ZMQ::MODE_SNDMORE);
+        //$snapshot->send("ICANHAZ?");
         while (1){
+            //$a = $snapshot->recv();
+            //var_dump($a);
             $kvmsg = new Zmq_Kvmsg($sequence);
-            $kvmsg->recv($sub_socket);
+            $kvmsg->recv($snapshot);
+            var_dump($kvmsg->body());
             $kvmsg->dump();
 
         }
