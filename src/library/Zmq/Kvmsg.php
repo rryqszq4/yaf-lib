@@ -11,8 +11,8 @@ class Zmq_Kvmsg
 
     const KEY_MAX = 255;
 
-    const FRAME_KEY = 0;
-    const FRAME_SEQ = 1;
+    const FRAME_KEY = 1;
+    const FRAME_SEQ = 0;
     const FRAME_UUID = 2;
     const FRAME_PROPS = 3;
     const FRAME_BODY = 4;
@@ -88,6 +88,25 @@ class Zmq_Kvmsg
         return $this;
     }
 
+    public function uuid()
+    {
+
+    }
+
+    public function set_uuid()
+    {
+        $this->_msg[self::FRAME_UUID] = null;
+        $this->_set_present(self::FRAME_UUID, 1);
+        return $this;
+    }
+
+    public function set_props()
+    {
+        $this->_msg[self::FRAME_PROPS] = null;
+        $this->_set_present(self::FRAME_PROPS, 1);
+        return $this;
+    }
+
     public function sequence()
     {
         if (!$this->_get_present(self::FRAME_SEQ)){
@@ -150,6 +169,17 @@ class Zmq_Kvmsg
         return $res;
     }
 
+    public function route_recv($socket)
+    {
+
+        $res = $socket->recvmulti();
+        $this->set_key($res[self::FRAME_KEY+1]);
+        $this->set_byte_sequence($res[self::FRAME_SEQ+1]);
+        $this->set_body($res[self::FRAME_BODY+1]);
+
+        return $this;
+    }
+
     public function recv($socket)
     {
         $res = $socket->recvmulti(ZMQ::MODE_SNDMORE);
@@ -181,15 +211,18 @@ class Zmq_Kvmsg
         $input = new ZMQSocket($context, ZMQ::SOCKET_ROUTER);
         $input->connect("inproc://kvmsg_selftest");
 
-        $kvmsg = new self(1);
+        $kvmsg = new self(123);
         $kvmsg->set_key('key');
+        //$kvmsg->set_sequence(1);
+        $kvmsg->set_uuid();
+        $kvmsg->set_props();
         $kvmsg->set_body('body');
         $kvmsg->dump();
 
         $kvmsg->send($output);
 
         $kvmsg_2 = new self(2);
-        $kvmsg_2->recv($input);
+        $kvmsg_2->route_recv($input);
         $kvmsg_2->dump();
 
     }

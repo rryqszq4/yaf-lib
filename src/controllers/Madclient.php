@@ -14,7 +14,7 @@ class MadclientController extends Controller{
 
         $context = new ZMQContext();
         $socket = new ZMQSocket($context, ZMQ::SOCKET_DEALER);
-        $socket->setSockOpt(ZMQ::SOCKOPT_IDENTITY,"identity");
+        //$socket->setSockOpt(ZMQ::SOCKOPT_IDENTITY,"identity");
         $socket->getSockOpt(ZMQ::SOCKOPT_IDENTITY);
 
         $socket->connect("tcp://127.0.0.1:5555");
@@ -45,6 +45,13 @@ class MadclientController extends Controller{
         Zmq_Kvmsg::test();
 
         return false;
+    }
+
+    public function msgAction(){
+
+        Zmq_Msg::test();
+        return false;
+
     }
 
 }
