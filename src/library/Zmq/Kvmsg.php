@@ -18,6 +18,8 @@ class Zmq_Kvmsg
     const FRAME_BODY = 4;
     const FRAMES = 5;
 
+    private $_identity = "";
+
     private $_msg = array();
 
     private $_present = array();
@@ -42,6 +44,11 @@ class Zmq_Kvmsg
         $this->set_sequence($sequence);
 
         //return $this;
+    }
+
+    public function identity()
+    {
+        return $this->_identity;
     }
 
     public function key()
@@ -163,6 +170,12 @@ class Zmq_Kvmsg
             return 0;
     }
 
+    public function store(&$kvmap)
+    {
+        if($this->size() > 0)
+            $kvmap[$this->key()] = $this->_msg;
+    }
+
     public function send($socket)
     {
         $res = $socket->sendmulti($this->_msg, ZMQ::MODE_SNDMORE);
@@ -173,6 +186,7 @@ class Zmq_Kvmsg
     {
 
         $res = $socket->recvmulti();
+        $this->_identity = $res[0];
         $this->set_key($res[self::FRAME_KEY+1]);
         $this->set_byte_sequence($res[self::FRAME_SEQ+1]);
         $this->set_body($res[self::FRAME_BODY+1]);
@@ -224,6 +238,7 @@ class Zmq_Kvmsg
         $kvmsg_2 = new self(2);
         $kvmsg_2->route_recv($input);
         $kvmsg_2->dump();
+
 
     }
 
