@@ -23,15 +23,20 @@ class MadserverController extends Sontroller {
 
         $sequence = 1;
         $snapshot->sendmulti(array("ICANHAZ?",self::SUBTREE), ZMQ::MODE_SNDMORE);
-        //$snapshot->send("ICANHAZ?");
         while (1){
-            //$a = $snapshot->recv();
-            //var_dump($a);
             $kvmsg = new Zmq_Kvmsg($sequence);
             $kvmsg->recv($snapshot);
-            var_dump($kvmsg->body());
-            $kvmsg->dump();
+            if ($kvmsg->key() == "KTHXBAI"){
+                echo "I: received snapshot=".$kvmsg->sequence()."\n";
+                break;
+            }
 
+        }
+        while (1){
+            $kvmsg = new Zmq_Kvmsg($sequence);
+            $kvmsg->recv($sub_socket);
+            echo "I: start receive sub=".$kvmsg->sequence()."\n";
+            $kvmsg->dump();
         }
 
 
