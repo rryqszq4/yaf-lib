@@ -24,6 +24,8 @@ class Zmq_Kvmsg
 
     private $_present = array();
 
+    private $_props = array();
+
     private function _get_present($frame){
         return $this->_present[$frame];
     }
@@ -31,6 +33,26 @@ class Zmq_Kvmsg
     private function _set_present($frame, $bool)
     {
         $this->_present[$frame] = $bool;
+    }
+
+    private function _encode_props($props_arr)
+    {
+        $res = array();
+        foreach ($props_arr as $k=>$v){
+            $res[] = $k."=".$v;
+        }
+        return $this->_msg[self::FRAME_PROPS] = implode("\n", $res);
+    }
+
+    private function _decode_props($props_str)
+    {
+        $tmp = explode("\n", $props_str);
+        foreach ($tmp as $k=>$v){
+            $tmp_1 = explode('=', $v);
+            if (isset($tmp_1[0]) && isset($tmp_1[1]))
+                $this->set_prop($tmp_1[0],$tmp_1[1]);
+        }
+        return null;
     }
 
     public function __construct($sequence)
@@ -107,9 +129,17 @@ class Zmq_Kvmsg
         return $this;
     }
 
-    public function set_props()
+    public function prop()
     {
-        $this->_msg[self::FRAME_PROPS] = null;
+        if (!$this->_get_present(self::FRAME_PROPS))
+            return "";
+        else
+            return $this->_msg[self::FRAME_PROPS];
+    }
+
+    public function set_prop($name, $value)
+    {
+        $this->_msg[self::FRAME_PROPS][$name] = $value;
         $this->_set_present(self::FRAME_PROPS, 1);
         return $this;
     }
@@ -178,14 +208,18 @@ class Zmq_Kvmsg
 
     public function send($socket)
     {
+        $this->_encode_props($this->prop());
+
         $res = $socket->sendmulti($this->_msg, ZMQ::MODE_SNDMORE);
         return $res;
     }
 
     public function route_recv($socket)
     {
-
         $res = $socket->recvmulti();
+
+        $this->_decode_props($res[self::FRAME_PROPS+1]);
+
         $this->_identity = $res[0];
         $this->set_key($res[self::FRAME_KEY+1]);
         $this->set_byte_sequence($res[self::FRAME_SEQ+1]);
@@ -197,6 +231,8 @@ class Zmq_Kvmsg
     public function recv($socket)
     {
         $res = $socket->recvmulti(ZMQ::MODE_SNDMORE);
+
+        $this->_decode_props($res[self::FRAME_PROPS]);
         $this->set_key($res[self::FRAME_KEY]);
         $this->set_byte_sequence($res[self::FRAME_SEQ]);
         $this->set_body($res[self::FRAME_BODY]);
@@ -209,7 +245,7 @@ class Zmq_Kvmsg
         $res['key'] = $this->key();
         $res['seq'] = $this->sequence();
         $res['uuid'] = null;
-        $res['props'] = null;
+        $res['props'] = $this->prop();
         $res['body'] = $this->body();
         $res['size'] = $this->size();
 
@@ -229,7 +265,7 @@ class Zmq_Kvmsg
         $kvmsg->set_key('key');
         //$kvmsg->set_sequence(1);
         $kvmsg->set_uuid();
-        $kvmsg->set_props();
+        $kvmsg->set_prop("prop1","value1");
         $kvmsg->set_body('body');
         $kvmsg->dump();
 
