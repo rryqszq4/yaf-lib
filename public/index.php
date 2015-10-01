@@ -14,6 +14,9 @@ if (DEBUG_TOOLS){
 
 require_once(APPLICATION_PATH."/src/tools/hprose-php/Hprose.php");
 
+if (!extension_loaded('yaf'))
+    require_once(APPLICATION_PATH."/framework/loader.php");
+
 $app = new Yaf_Application(APPLICATION_PATH."/conf/application.ini");
 $app->bootstrap()->run();
 
