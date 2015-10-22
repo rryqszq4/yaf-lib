@@ -16,6 +16,10 @@ class MadserverController extends Sontroller {
         $context = new ZMQContext();
         $sub_socket = new ZMQSocket($context, ZMQ::SOCKET_SUB);
         $sub_socket->setSockOpt(ZMQ::SOCKOPT_SUBSCRIBE, "");
+        $sub_socket->setSockOpt(ZMQ::SOCKOPT_TCP_KEEPALIVE, 0);
+        $sub_socket->setSockOpt(ZMQ::SOCKOPT_TCP_KEEPALIVE_IDLE, 10);
+        $sub_socket->setSockOpt(ZMQ::SOCKOPT_TCP_KEEPALIVE_CNT, 2);
+        $sub_socket->setSockOpt(ZMQ::SOCKOPT_TCP_KEEPALIVE_INTVL, 5);
         $sub_socket->connect("tcp://127.0.0.1:5557");
 
         $snapshot = new ZMQSocket($context, ZMQ::SOCKET_DEALER);
