@@ -7,16 +7,17 @@ class Controller extends Yaf_Controller_Abstract
 {
 
     public $_layout = 'layout';
-    public $enable_view = true;
+    public $_enable_view = false;
 
     public function init(){
         if (!$this->getRequest()->isCli()){
-            if ($this->enable_view){
+            if ($this->_enable_view){
                 $this->_regWidget();
                 $this->_setLayout();
             }else {
                 Yaf_Dispatcher::getInstance()->returnResponse(true);
                 Yaf_Dispatcher::getInstance()->disableView();
+                $this->_removeLayout();
             }
         }else {
             try {
@@ -37,14 +38,20 @@ class Controller extends Yaf_Controller_Abstract
 
 
     public function _setLayout(){
+        $config = Yaf_Registry::get('config');
         if (!$this->_layout){
             $layout = Yaf_Registry::get('layout');
-            $layout->setFile($this->_layout);
+            $layout->setFile($this->_layout.'.'.$config['application']['view']['ext']);
         }else {
             if ($this->_layout != 'layout'){
                 $layout = Yaf_Registry::get('layout');
-                $layout->setFile($this->_layout.'.phtml');
+                $layout->setFile($this->_layout.'.'.$config['application']['view']['ext']);
             }
         }
+    }
+
+    public function _removeLayout(){
+        $layout = Yaf_Registry::get('layout');
+        $layout->setFile(false);
     }
 }
