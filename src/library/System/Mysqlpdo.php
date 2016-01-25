@@ -29,7 +29,7 @@ class System_Mysqlpdo
      */
     public function __construct()
     {
-        $this->log = new System_Log();
+        #$this->log = new System_Log();
         $this->Connect();
         $this->parameters = array();
     }
@@ -44,7 +44,14 @@ class System_Mysqlpdo
      */
     private function Connect()
     {
-        $this->settings = parse_ini_file("settings.ini.php");
+        $config = Yaf_Application::app()->getConfig();
+        $this->settings = array(
+            'host' => $config->mysql->host,
+            'user' => $config->mysql->username,
+            'password' => $config->mysql->password,
+            'dbname' => $config->mysql->db
+        );
+
         $dsn = 'mysql:dbname='.$this->settings["dbname"].';host='.$this->settings["host"].'';
         try
         {
@@ -243,7 +250,7 @@ class System_Mysqlpdo
             $message .= "\r\nRaw SQL : "  . $sql;
         }
         # Write into log
-        $this->log->write($message);
+        #$this->log->write($message);
         return $exception;
     }
 }
