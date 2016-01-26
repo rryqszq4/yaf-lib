@@ -5,6 +5,7 @@ error_reporting(E_ALL);
 date_default_timezone_set('Asia/Shanghai');
 
 define("APPLICATION_PATH", dirname(dirname(__FILE__)));
+define("VIEW_PATH", APPLICATION_PATH."/src/views");
 define("DEBUG_TOOLS",true);
 
 if (DEBUG_TOOLS){

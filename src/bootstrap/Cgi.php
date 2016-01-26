@@ -45,4 +45,11 @@ class Bootstrap extends Yaf_Bootstrap_Abstract{
     public function _initView(Yaf_Dispatcher $dispatcher){
 
     }
+
+    public function _initComposer(Yaf_Dispatcher $dispatcher){
+        $autoload = $this->_config['composer']['autoload'];
+        if (file_exists($autoload)) {
+            Yaf_Loader::import($autoload);
+        }
+    }
 }
