@@ -4,7 +4,8 @@ yaf-lib 基于yaf的应用开发框架，
 简单的mvc中间层继承补充，
 常用缓存、数据库等驱动类，
 添加widget组件模块，及layout插件，
-rpc服务化，支持hprose、yar等，
+rpc服务化，支持jsonrpc、hprose、yar等，
+composer依赖包支持，
 支持xhprof性能调试。
 
 ##requirement
@@ -17,9 +18,12 @@ rpc服务化，支持hprose、yar等，
 - xapian-bindings 1.2.21
 - scws 1.2.2
 - swoole 1.7.17
+- jsonrpc 0.0.9
 - hprose-php 1.5.4
 - php-yar 1.2.4
 - xhprof 0.9.4
+- php-yajl 0.0.1
+- php-cjson 0.0.1
 
 ##src/controllers
 #### Madclient
