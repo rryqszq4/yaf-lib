@@ -27,7 +27,6 @@ composer依赖包支持，
 
 ##src/controllers
 #### Madclient
-http://localhost/madclient
 Madclient是php实现的MadzMQ消息队列的客户端，通过msg协议与madbroker通信，异步发送消息。
 
 ##src/bootstrap
