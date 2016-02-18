@@ -9,6 +9,9 @@
 class System_Sort {
 
 
+    /* ->
+    插入排序：拷贝当前的数据到临时位置，依次比较之前位置，如果合适就插入
+    <- */
     static public function insertion($arr){
         $n = count($arr);
         for ($i = 1; $i < $n; $i++){
