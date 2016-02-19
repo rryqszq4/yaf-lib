@@ -8,7 +8,6 @@
 
 class System_Sort {
 
-
     /* ->
     插入排序：拷贝当前的数据到临时位置，依次比较之前位置，如果合适就插入
     <- */
@@ -24,6 +23,9 @@ class System_Sort {
         return $arr;
     }
 
+    /* ->
+    选择排序：当前数据与后面的数据中最小的数据进行交换
+    <- */
     static public function selection($arr){
         $n = count($arr);
         for ($i=0; $i < $n-1; $i++){
