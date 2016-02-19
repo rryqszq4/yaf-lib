@@ -24,7 +24,7 @@ class System_Sort {
     }
 
     /* ->
-    选择排序：当前数据与后面的数据中最小的数据进行交换
+    选择排序：当前数据与当前＋后面的数据中最小的数据进行交换
     <- */
     static public function selection($arr){
         $n = count($arr);
@@ -40,6 +40,9 @@ class System_Sort {
         return $arr;
     }
 
+    /* ->
+    冒泡排序：数据从底部开始扫瞄，如果相邻两数据逆序，就交换位置
+    <- */
     static public function bubble($arr){
         $n = count($arr);
         for ($i = 0; $i < $n-1; $i++){
