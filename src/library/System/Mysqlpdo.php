@@ -47,12 +47,13 @@ class System_Mysqlpdo
         $config = Yaf_Application::app()->getConfig();
         $this->settings = array(
             'host' => $config->mysql->host,
+            'port' => $config->mysql->port,
             'user' => $config->mysql->username,
             'password' => $config->mysql->password,
             'dbname' => $config->mysql->db
         );
 
-        $dsn = 'mysql:dbname='.$this->settings["dbname"].';host='.$this->settings["host"].'';
+        $dsn = 'mysql:dbname='.$this->settings["dbname"].';host='.$this->settings["host"].';port='.$this->settings["port"].'';
         try
         {
             # Read settings from INI file, set UTF8
@@ -173,7 +174,7 @@ class System_Mysqlpdo
         if ($statement === 'select' || $statement === 'show') {
             return $this->sQuery->fetchAll($fetchmode);
         }
-        elseif ( $statement === 'insert' ||  $statement === 'update' || $statement === 'delete' ) {
+        elseif ( $statement === 'insert' || $statement === 'replace' ||  $statement === 'update' || $statement === 'delete' ) {
             return $this->sQuery->rowCount();
         }
         else {
