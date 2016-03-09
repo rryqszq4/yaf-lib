@@ -102,6 +102,11 @@ class System_Mongo {
         return $cursor;
     }
 
+    public function count($query=array()){
+        $res = $this->collection->count($query);
+        return $res;
+    }
+
     public function insert($query=array(),$option=array()){
         $res = $this->collection->insert($query, $option);
         return $res;
